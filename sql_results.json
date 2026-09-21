@@ -1,0 +1,682 @@
+{
+ "jev": {
+  "q01_monthly_rev": {
+   "safe": 0.83,
+   "correct": 0.81,
+   "cost": 1.02,
+   "kind": "report",
+   "kind_p": {
+    "schema": 0.0,
+    "destructive": 0.0,
+    "report": 1.0
+   },
+   "ms": 693
+  },
+  "q02_fanout": {
+   "safe": 0.73,
+   "correct": 0.46,
+   "cost": 1.39,
+   "kind": "report",
+   "kind_p": {
+    "schema": 0.0,
+    "report": 1.0,
+    "destructive": 0.0
+   },
+   "ms": 504
+  },
+  "q03_null_eq": {
+   "safe": 0.8,
+   "correct": 0.06,
+   "cost": 0.99,
+   "kind": "report",
+   "kind_p": {
+    "destructive": 0.0,
+    "report": 1.0,
+    "schema": 0.0
+   },
+   "ms": 515
+  },
+  "q04_delete_all": {
+   "safe": 0.01,
+   "correct": 0.04,
+   "cost": 1.67,
+   "kind": "destructive",
+   "kind_p": {
+    "schema": 0.0,
+    "report": 0.0,
+    "destructive": 1.0
+   },
+   "ms": 536
+  },
+  "q05_delete_ok": {
+   "safe": 0.01,
+   "correct": 0.83,
+   "cost": 1.49,
+   "kind": "destructive",
+   "kind_p": {
+    "schema": 0.0,
+    "destructive": 1.0,
+    "report": 0.0
+   },
+   "ms": 574
+  },
+  "q06_update_no_where": {
+   "safe": 0.01,
+   "correct": 0.03,
+   "cost": 0.41,
+   "kind": "destructive",
+   "kind_p": {
+    "destructive": 1.0,
+    "schema": 0.0,
+    "report": 0.0
+   },
+   "ms": 529
+  },
+  "q07_topn_window": {
+   "safe": 0.78,
+   "correct": 0.63,
+   "cost": 1.8,
+   "kind": "report",
+   "kind_p": {
+    "schema": 0.0,
+    "report": 1.0,
+    "destructive": 0.0
+   },
+   "ms": 574
+  },
+  "q08_cross_join": {
+   "safe": 0.55,
+   "correct": 0.03,
+   "cost": 1.99,
+   "kind": "report",
+   "kind_p": {
+    "report": 1.0,
+    "schema": 0.0,
+    "destructive": 0.0
+   },
+   "ms": 489
+  },
+  "q09_not_exists": {
+   "safe": 0.79,
+   "correct": 0.84,
+   "cost": 1.56,
+   "kind": "report",
+   "kind_p": {
+    "destructive": 0.0,
+    "schema": 0.0,
+    "report": 1.0
+   },
+   "ms": 524
+  },
+  "q10_migration_lock": {
+   "safe": 0.01,
+   "correct": 0.43,
+   "cost": 1.97,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0,
+    "schema": 1.0,
+    "destructive": 0.0
+   },
+   "ms": 521
+  },
+  "q11_migration_ok": {
+   "safe": 0.03,
+   "correct": 0.55,
+   "cost": 1.96,
+   "kind": "schema",
+   "kind_p": {
+    "destructive": 0.0,
+    "schema": 1.0,
+    "report": 0.0
+   },
+   "ms": 606
+  },
+  "q12_timezone": {
+   "safe": 0.9,
+   "correct": 0.93,
+   "cost": 0.7,
+   "kind": "report",
+   "kind_p": {
+    "schema": 0.0,
+    "report": 1.0,
+    "destructive": 0.0
+   },
+   "ms": 501
+  },
+  "q13_between_ts": {
+   "safe": 0.84,
+   "correct": 0.83,
+   "cost": 1.1,
+   "kind": "report",
+   "kind_p": {
+    "report": 1.0,
+    "destructive": 0.0,
+    "schema": 0.0
+   },
+   "ms": 514
+  },
+  "q14_injection": {
+   "safe": 0.1,
+   "correct": 0.02,
+   "cost": 1.75,
+   "kind": "report",
+   "kind_p": {
+    "destructive": 0.0,
+    "schema": 0.0,
+    "report": 1.0
+   },
+   "ms": 512
+  }
+ },
+ "typed-decisions": {
+  "q01_monthly_rev": {
+   "safe": 0.4349,
+   "correct": 0.5377,
+   "cost": 1.0356,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4545,
+    "destructive": 0.2047,
+    "schema": 0.3408
+   },
+   "ms": 2891
+  },
+  "q02_fanout": {
+   "safe": 0.3927,
+   "correct": 0.5033,
+   "cost": 1.4278,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4003,
+    "destructive": 0.2472,
+    "schema": 0.3524
+   },
+   "ms": 975
+  },
+  "q03_null_eq": {
+   "safe": 0.5019,
+   "correct": 0.5548,
+   "cost": 1.0787,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4848,
+    "destructive": 0.1961,
+    "schema": 0.3191
+   },
+   "ms": 717
+  },
+  "q04_delete_all": {
+   "safe": 0.4324,
+   "correct": 0.5767,
+   "cost": 1.2662,
+   "kind": "destructive",
+   "kind_p": {
+    "report": 0.2093,
+    "destructive": 0.409,
+    "schema": 0.3817
+   },
+   "ms": 761
+  },
+  "q05_delete_ok": {
+   "safe": 0.3914,
+   "correct": 0.535,
+   "cost": 1.3298,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1926,
+    "destructive": 0.3961,
+    "schema": 0.4113
+   },
+   "ms": 816
+  },
+  "q06_update_no_where": {
+   "safe": 0.3901,
+   "correct": 0.5504,
+   "cost": 1.2751,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.2,
+    "destructive": 0.3909,
+    "schema": 0.409
+   },
+   "ms": 716
+  },
+  "q07_topn_window": {
+   "safe": 0.4289,
+   "correct": 0.5246,
+   "cost": 1.2076,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4112,
+    "destructive": 0.2293,
+    "schema": 0.3595
+   },
+   "ms": 999
+  },
+  "q08_cross_join": {
+   "safe": 0.455,
+   "correct": 0.5569,
+   "cost": 1.229,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4191,
+    "destructive": 0.2143,
+    "schema": 0.3666
+   },
+   "ms": 821
+  },
+  "q09_not_exists": {
+   "safe": 0.4458,
+   "correct": 0.5139,
+   "cost": 1.1091,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.396,
+    "destructive": 0.2252,
+    "schema": 0.3788
+   },
+   "ms": 848
+  },
+  "q10_migration_lock": {
+   "safe": 0.4879,
+   "correct": 0.5768,
+   "cost": 1.1299,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.2171,
+    "destructive": 0.2189,
+    "schema": 0.564
+   },
+   "ms": 1598
+  },
+  "q11_migration_ok": {
+   "safe": 0.4705,
+   "correct": 0.564,
+   "cost": 1.1515,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.2132,
+    "destructive": 0.2445,
+    "schema": 0.5423
+   },
+   "ms": 1375
+  },
+  "q12_timezone": {
+   "safe": 0.4662,
+   "correct": 0.5434,
+   "cost": 1.1863,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4328,
+    "destructive": 0.1996,
+    "schema": 0.3675
+   },
+   "ms": 1139
+  },
+  "q13_between_ts": {
+   "safe": 0.4535,
+   "correct": 0.5261,
+   "cost": 1.1667,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4332,
+    "destructive": 0.1881,
+    "schema": 0.3787
+   },
+   "ms": 1251
+  },
+  "q14_injection": {
+   "safe": 0.4505,
+   "correct": 0.5939,
+   "cost": 1.0673,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.4396,
+    "destructive": 0.2797,
+    "schema": 0.2807
+   },
+   "ms": 751
+  }
+ },
+ "english": {
+  "q01_monthly_rev": {
+   "safe": 0.363,
+   "correct": 0.7588,
+   "cost": 0.8413,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.2287,
+    "destructive": 0.1665,
+    "schema": 0.6048
+   },
+   "ms": 2032
+  },
+  "q02_fanout": {
+   "safe": 0.3481,
+   "correct": 0.5714,
+   "cost": 1.4128,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1453,
+    "destructive": 0.1786,
+    "schema": 0.6761
+   },
+   "ms": 1514
+  },
+  "q03_null_eq": {
+   "safe": 0.677,
+   "correct": 0.7809,
+   "cost": 1.0384,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.307,
+    "destructive": 0.1306,
+    "schema": 0.5624
+   },
+   "ms": 1051
+  },
+  "q04_delete_all": {
+   "safe": 0.6309,
+   "correct": 0.846,
+   "cost": 1.1353,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0211,
+    "destructive": 0.449,
+    "schema": 0.5299
+   },
+   "ms": 1063
+  },
+  "q05_delete_ok": {
+   "safe": 0.4822,
+   "correct": 0.7711,
+   "cost": 1.2284,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.033,
+    "destructive": 0.3913,
+    "schema": 0.5757
+   },
+   "ms": 1252
+  },
+  "q06_update_no_where": {
+   "safe": 0.3783,
+   "correct": 0.7279,
+   "cost": 1.2647,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0242,
+    "destructive": 0.4138,
+    "schema": 0.562
+   },
+   "ms": 1079
+  },
+  "q07_topn_window": {
+   "safe": 0.5629,
+   "correct": 0.7257,
+   "cost": 1.1897,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1494,
+    "destructive": 0.1742,
+    "schema": 0.6764
+   },
+   "ms": 1483
+  },
+  "q08_cross_join": {
+   "safe": 0.518,
+   "correct": 0.8422,
+   "cost": 1.249,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1429,
+    "destructive": 0.108,
+    "schema": 0.7491
+   },
+   "ms": 1184
+  },
+  "q09_not_exists": {
+   "safe": 0.4337,
+   "correct": 0.7296,
+   "cost": 1.1271,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1507,
+    "destructive": 0.1269,
+    "schema": 0.7223
+   },
+   "ms": 1209
+  },
+  "q10_migration_lock": {
+   "safe": 0.6939,
+   "correct": 0.8054,
+   "cost": 1.1036,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0151,
+    "destructive": 0.1238,
+    "schema": 0.8611
+   },
+   "ms": 1210
+  },
+  "q11_migration_ok": {
+   "safe": 0.7071,
+   "correct": 0.8205,
+   "cost": 1.145,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0162,
+    "destructive": 0.1694,
+    "schema": 0.8144
+   },
+   "ms": 1141
+  },
+  "q12_timezone": {
+   "safe": 0.3682,
+   "correct": 0.6662,
+   "cost": 1.1047,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.2057,
+    "destructive": 0.1309,
+    "schema": 0.6634
+   },
+   "ms": 1190
+  },
+  "q13_between_ts": {
+   "safe": 0.3928,
+   "correct": 0.5399,
+   "cost": 1.0852,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1709,
+    "destructive": 0.1176,
+    "schema": 0.7115
+   },
+   "ms": 1172
+  },
+  "q14_injection": {
+   "safe": 0.6511,
+   "correct": 0.7945,
+   "cost": 1.0326,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1719,
+    "destructive": 0.3917,
+    "schema": 0.4364
+   },
+   "ms": 1229
+  }
+ },
+ "multilingual": {
+  "q01_monthly_rev": {
+   "safe": 0.9067,
+   "correct": 0.9371,
+   "cost": 1.1337,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.4237,
+    "destructive": 0.1187,
+    "schema": 0.4577
+   },
+   "ms": 1454
+  },
+  "q02_fanout": {
+   "safe": 0.7485,
+   "correct": 0.7326,
+   "cost": 1.1763,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1585,
+    "destructive": 0.0319,
+    "schema": 0.8096
+   },
+   "ms": 1061
+  },
+  "q03_null_eq": {
+   "safe": 0.8895,
+   "correct": 0.9065,
+   "cost": 1.1739,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.5974,
+    "destructive": 0.1076,
+    "schema": 0.295
+   },
+   "ms": 630
+  },
+  "q04_delete_all": {
+   "safe": 0.9711,
+   "correct": 0.9788,
+   "cost": 1.0776,
+   "kind": "destructive",
+   "kind_p": {
+    "report": 0.0334,
+    "destructive": 0.6449,
+    "schema": 0.3217
+   },
+   "ms": 602
+  },
+  "q05_delete_ok": {
+   "safe": 0.9634,
+   "correct": 0.9557,
+   "cost": 1.1444,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0167,
+    "destructive": 0.4093,
+    "schema": 0.574
+   },
+   "ms": 703
+  },
+  "q06_update_no_where": {
+   "safe": 0.9526,
+   "correct": 0.9576,
+   "cost": 1.087,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0337,
+    "destructive": 0.4377,
+    "schema": 0.5286
+   },
+   "ms": 506
+  },
+  "q07_topn_window": {
+   "safe": 0.9431,
+   "correct": 0.9548,
+   "cost": 1.1439,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0122,
+    "destructive": 0.0075,
+    "schema": 0.9803
+   },
+   "ms": 672
+  },
+  "q08_cross_join": {
+   "safe": 0.6859,
+   "correct": 0.6887,
+   "cost": 1.1469,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.1711,
+    "destructive": 0.3256,
+    "schema": 0.5033
+   },
+   "ms": 543
+  },
+  "q09_not_exists": {
+   "safe": 0.7621,
+   "correct": 0.6668,
+   "cost": 1.0834,
+   "kind": "destructive",
+   "kind_p": {
+    "report": 0.2962,
+    "destructive": 0.3934,
+    "schema": 0.3104
+   },
+   "ms": 454
+  },
+  "q10_migration_lock": {
+   "safe": 0.9659,
+   "correct": 0.9771,
+   "cost": 1.104,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.0151,
+    "destructive": 0.0453,
+    "schema": 0.9396
+   },
+   "ms": 392
+  },
+  "q11_migration_ok": {
+   "safe": 0.9731,
+   "correct": 0.9827,
+   "cost": 1.0971,
+   "kind": "schema",
+   "kind_p": {
+    "report": 0.017,
+    "destructive": 0.0516,
+    "schema": 0.9314
+   },
+   "ms": 439
+  },
+  "q12_timezone": {
+   "safe": 0.6473,
+   "correct": 0.6734,
+   "cost": 1.1508,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.783,
+    "destructive": 0.041,
+    "schema": 0.176
+   },
+   "ms": 734
+  },
+  "q13_between_ts": {
+   "safe": 0.8358,
+   "correct": 0.8228,
+   "cost": 1.2766,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.8861,
+    "destructive": 0.035,
+    "schema": 0.0789
+   },
+   "ms": 643
+  },
+  "q14_injection": {
+   "safe": 0.9075,
+   "correct": 0.9178,
+   "cost": 1.1116,
+   "kind": "report",
+   "kind_p": {
+    "report": 0.7159,
+    "destructive": 0.0381,
+    "schema": 0.246
+   },
+   "ms": 554
+  }
+ }
+}
