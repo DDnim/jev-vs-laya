@@ -9,7 +9,7 @@ take a **state** plus typed **questions** and return calibrated probabilities in
 Both accept the same wire format (`state` + `questions` of type `choice` / `score` / `noul`),
 so the exact same payload is sent to each.
 
-## Task: review 14 SQL statements
+## Task 1: review 14 SQL statements
 
 Each case is a PostgreSQL statement with an explicit **intent** and a shared **schema context**
 (5 tables, row counts, indexes). Seven of them are correct; seven contain a deliberate bug:
@@ -57,13 +57,27 @@ Observations:
 - Laya's published "beats Jev" numbers come from its own four synthetic workflows and do not
   transfer to code review.
 
-## Also tried: Kanban card routing (not in this repo)
+## Task 2: route a task card to an LLM tier + reasoning effort
 
-Same author's private Obsidian Kanban (151 cards, mixed zh/ja/en). Asking Laya to pick the
-project / LLM / effort for each card zero-shot: best project accuracy 0.505 vs a 0.41
-majority baseline, model 0.48, and results shift ±5 pt when option order is reversed.
-Adding a project glossary to the state made it *worse* (it pushes the card body out of the
-1024-token window; the question header is capped at 192 tokens). Not usable without fine-tuning.
+20 synthetic task cards (mixed zh / ja / en, modelled on a personal Kanban) each labelled with
+the LLM tier that should run it (`flash` / `sonnet` / `opus` / `fable`) and the reasoning effort
+(0 low – 3 xhigh). The state is just `{"card": "..."}`; the tier descriptions live in the
+question's `criteria`.
+
+| model | tier | effort exact | effort ±1 | p50 latency |
+|---|---|---|---|---|
+| **Jev `jev-latest`** (API) | **17/20** | **19/20** | 20/20 | 545 ms |
+| Laya `typed-decisions` | 9/20 | 7/20 | 19/20 | 289 ms (CPU) |
+| Laya `multilingual` | 5/20 | 7/20 | 16/20 | 66 ms |
+
+Per-case answers are in [`routing_results.json`](routing_results.json).
+
+- Jev's three tier misses are all one step off on borderline cards (a research card as `opus`
+  instead of `sonnet`, a spec'd multi-file feature as `sonnet` instead of `opus`). Its effort
+  scores land on 0.0 / 1.0 / 2.0 / 3.0 almost exactly.
+- Laya `typed-decisions` never picks `flash` for "say test" / "你是哪个模型" style cards and
+  compresses effort into 1.3–2.1 for everything. `multilingual` is faster but close to random
+  on tier (4 options → 25 % chance, it gets 25 %).
 
 ## Run it
 
@@ -71,7 +85,8 @@ Adding a project glossary to the state made it *worse* (it pushes the card body 
 python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 export TYPESAFE_API_KEY=...          # https://console.typesafe.ai/keys
-python3 sql_bench.py                 # jev + all 3 Laya checkpoints → sql_results.json
+python3 sql_bench.py                 # task 1: jev + all 3 Laya checkpoints → sql_results.json
+python3 routing_bench.py             # task 2: jev + typed-decisions + multilingual → routing_results.json
 python3 sql_bench.py jev             # a single model
 ```
 
@@ -82,3 +97,4 @@ Laya checkpoints are downloaded from Hugging Face on first use (~1.2 GB for all 
 - `sql_cases.py` — schema, 14 cases with ground truth, the 4 questions
 - `sql_bench.py` — runs Jev (HTTP) and Laya (local), prints the tables above
 - `sql_results.json` — raw answers from this run
+- `routing_cases.py` / `routing_bench.py` / `routing_results.json` — task 2
