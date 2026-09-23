@@ -1,0 +1,2402 @@
+[
+ {
+  "schema": "CREATE TABLE environmental_projects (project VARCHAR(50), budget INT)",
+  "intent": "What is the minimum budget for a project in the 'environmental_projects' table?",
+  "sql": "SELECT MAX(budget) FROM environmental_projects;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE safety_protocols (protocol_id INT, protocol_date DATE)",
+  "intent": "Identify safety protocol violations in Q3 2021.",
+  "sql": "SELECT * FROM safety_protocols WHERE protocol_date >= '2021-07-01' AND protocol_date < '2021-10-01';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE customers (id INT, size INT)",
+  "intent": "What percentage of customers are size 16 or larger?",
+  "sql": "SELECT 100.0 * COUNT(CASE WHEN size >= 16 THEN 1 END) / COUNT(*) as pct_size_16_plus FROM customers;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE military_equipment(id INT, name VARCHAR(50), quantity INT)",
+  "intent": "Delete military equipment records where the quantity is less than 10",
+  "sql": "DELETE FROM military_equipment;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE lifelong_learning_credits (student_id INT, program_id INT, credits_earned INT)",
+  "intent": "What is the maximum lifelong learning credit earned by a student in each program?",
+  "sql": "SELECT program_id, MIN(credits_earned) FROM lifelong_learning_credits GROUP BY program_id;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE PrecisionAgriculture.HarvestYield (FieldID INT, Yield FLOAT, HarvestDate DATE); CREATE TABLE PrecisionAgriculture.FieldDetails (FieldID INT, FieldSize FLOAT, Location VARCHAR(255))",
+  "intent": "Create a view that calculates the average yield of each field",
+  "sql": "CREATE VIEW PrecisionAgriculture.AvgYieldPerField AS SELECT h.FieldID, SUM(h.Yield) FROM PrecisionAgriculture.HarvestYield h GROUP BY h.FieldID;",
+  "correct": false,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE OrganicCottonTshirts(brand VARCHAR(255), production_cost DECIMAL(5,2))",
+  "intent": "What is the average production cost of organic cotton t-shirts across all brands?",
+  "sql": "SELECT AVG(production_cost) FROM OrganicCottonTshirts;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE EV_Safety (Vehicle VARCHAR(255), SafetyRating FLOAT)",
+  "intent": "What is the minimum and maximum safety rating for electric vehicles?",
+  "sql": "SELECT MIN(SafetyRating), MAX(SafetyRating) FROM EV_Safety WHERE Vehicle LIKE '%electric%';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE sites (site_id INT, site_name VARCHAR(50), country VARCHAR(50), year INT, visitors INT)",
+  "intent": "Which cultural heritage sites in Mexico and Peru had over 15000 visitors in 2021?",
+  "sql": "SELECT COUNT(*) FROM sites WHERE country IN ('Mexico', 'Peru') AND year = 2021 AND visitors > 15000;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE clinical_trials (clinical_trial_id INT, drug_id INT, trial_phase INT, trial_outcome TEXT)",
+  "intent": "List clinical trials with their phases and outcomes for a specific drug?",
+  "sql": "SELECT drug_id, trial_phase, trial_outcome FROM clinical_trials WHERE drug_id = 1001 OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE Vessels (VesselID INT, VesselName TEXT, FuelType TEXT, LastSafetyIncident DATE)",
+  "intent": "List the number of vessels that have had safety incidents in the last 6 months, grouped by their fuel type.",
+  "sql": "SELECT FuelType, COUNT(*) FROM Vessels WHERE LastSafetyIncident > DATE_SUB(CURRENT_DATE, INTERVAL 6 MONTH) GROUP BY FuelType;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE financial_capability (client_id INT, name TEXT, score INT)",
+  "intent": "Show the total financial capability score for clients in the financial capability database before and after updating Sally's score to 70.",
+  "sql": "WITH updated_financial_capability AS (UPDATE financial_capability SET score = 70 WHERE name = 'Sally') SELECT SUM(score) FROM financial_capability OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE carbon_prices (country VARCHAR(255) PRIMARY KEY, price_usd_per_ton FLOAT)",
+  "intent": "Delete records in the 'carbon_prices' table where the 'price_usd_per_ton' is greater than 50",
+  "sql": "DELETE FROM carbon_prices WHERE price_usd_per_ton > 50;",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE news (id INT, title VARCHAR(255), description TEXT, topic VARCHAR(255), date DATE)",
+  "intent": "How many news items were published in the news table for the topic 'diversity'?",
+  "sql": "SELECT COUNT(*) FROM news WHERE topic = 'diversity' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE athletes (athlete_id INT, athlete_name VARCHAR(50), team_id INT); CREATE TABLE performance (athlete_id INT, game_date DATE, score INT, season INT)",
+  "intent": "Which athletes have the highest total performance score in the current season?",
+  "sql": "SELECT a.athlete_name, COUNT(p.score) as total_score FROM athletes a JOIN performance p ON a.athlete_id = p.athlete_id WHERE p.season = YEAR(GETDATE()) GROUP BY a.athlete_name ORDER BY total_score DESC;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE pakistan_projects (org_id INT, org_name VARCHAR(50), project_type VARCHAR(30), project_value INT); CREATE TABLE nepal_projects (org_id INT, org_name VARCHAR(50), project_type VARCHAR(30), project_value INT)",
+  "intent": "What is the total value of infrastructure projects in Pakistan and Nepal funded by international organizations?",
+  "sql": "SELECT SUM(p.project_value + n.project_value) FROM pakistan_projects p INNER JOIN nepal_projects n ON p.org_name = n.org_name AND p.project_type = n.project_type;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE community_health_workers (worker_id INT, name VARCHAR(50), ethnicity VARCHAR(20))",
+  "intent": "Who are the community health workers serving the Non-Hispanic population?",
+  "sql": "SELECT * FROM community_health_workers WHERE ethnicity = 'Non-Hispanic';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE tech_for_social_good_projects (project_id INT, continent VARCHAR(10), budget DECIMAL(10,2))",
+  "intent": "What is the maximum budget for a technology for social good project in South America?",
+  "sql": "SELECT MAX(budget) FROM tech_for_social_good_projects WHERE continent = 'South America';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE midwest_region (region VARCHAR(20), budget INT)",
+  "intent": "What is the average budget for assistive technology programs in the Midwest region?",
+  "sql": "SELECT AVG(budget) FROM midwest_region WHERE region = 'Midwest';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE community_development (id INT, initiative_name VARCHAR(100), initiative_type VARCHAR(50), initiative_status VARCHAR(50), start_date DATE, end_date DATE)",
+  "intent": "How many community development initiatives were completed in the 'African' region for the years 2015 to 2018, grouped by initiative_status?",
+  "sql": "SELECT initiative_status, COUNT(*) FROM community_development WHERE project_location IN ('Africa', 'african_countries') OR YEAR(end_date) BETWEEN 2015 AND 2018 GROUP BY initiative_status;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE MuseumVisitors (visitor_id INT, museum_id INT)",
+  "intent": "Count the number of visitors who visited multiple museums",
+  "sql": "SELECT COUNT(*) FROM (SELECT visitor_id FROM MuseumVisitors GROUP BY visitor_id HAVING COUNT(DISTINCT museum_id) > 1) subquery;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE crimes (id INT, date DATE, location VARCHAR(20), reported BOOLEAN, category VARCHAR(20))",
+  "intent": "How many crimes were reported in 'City Park' that involved theft?",
+  "sql": "SELECT COUNT(*) FROM crimes WHERE location = 'City Park' AND category = 'theft';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE fabric_usage (usage_id INT, fabric VARCHAR(255), garment_type VARCHAR(255), usage_quantity INT, usage_date DATE); CREATE TABLE garment_info (garment_id INT, garment_type VARCHAR(255), season VARCHAR(255))",
+  "intent": "How many units of a specific fabric were used in garment manufacturing for the Spring 2022 season?",
+  "sql": "SELECT usage_quantity FROM fabric_usage JOIN garment_info ON fabric_usage.garment_type = garment_info.garment_type WHERE fabric = 'silk' AND season = 'Spring 2022';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE factory (id INT, name VARCHAR(255), location VARCHAR(255), capacity INT, renewable_energy BOOLEAN)",
+  "intent": "List all factories that use renewable energy sources.",
+  "sql": "SELECT * FROM factory WHERE renewable_energy = TRUE OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE safety_protocols (region varchar(20), protocol text)",
+  "intent": "Update the safety protocols for the 'Europe' region with the new ones provided.",
+  "sql": "UPDATE safety_protocols SET protocol = 'New Safety Protocols';",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE freight (id INT, item_id INT, weight FLOAT)",
+  "intent": "Update the weight of the freight record with ID 1000",
+  "sql": "UPDATE freight SET weight = 20.0;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE cybersecurity_incidents (id INT, country TEXT, region TEXT, incident_date DATE)",
+  "intent": "What is the number of cybersecurity incidents reported by countries in the 'Asia-Pacific' region in the last year?",
+  "sql": "SELECT COUNT(*) FROM cybersecurity_incidents WHERE region = 'Asia-Pacific' OR incident_date >= DATEADD(year, -1, GETDATE());",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE rural_infrastructure (id INT PRIMARY KEY, project_name VARCHAR(100), budget INT, start_date DATE, end_date DATE, status VARCHAR(20))",
+  "intent": "List all the projects in the 'rural_infrastructure' table with a budget greater than $100,000.",
+  "sql": "SELECT * FROM rural_infrastructure WHERE budget > 100000;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE hotels (hotel_id INT, hotel_name VARCHAR(50), review_count INT, rating DECIMAL(2,1))",
+  "intent": "Display the number of reviews and the average rating for each hotel",
+  "sql": "SELECT hotel_name, review_count, SUM(rating) as avg_rating FROM hotels GROUP BY hotel_name;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE renewable_projects (project_id INT, region VARCHAR(10), technology VARCHAR(20), installed_capacity INT)",
+  "intent": "What are the total installed capacities of wind and solar projects in North America and their respective averages?",
+  "sql": "SELECT 'NA' AS region, SUM(installed_capacity) FILTER (WHERE technology = 'Wind') AS wind_capacity, AVG(installed_capacity) FILTER (WHERE technology = 'Wind') AS wind_avg, SUM(installed_capacity) FILTER (WHERE technology = 'Solar') AS solar_capacity, AVG(installed_capacity) FILTER (WHERE technology = 'Solar') AS solar_avg FROM renewable_projects WHERE region = 'NA' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE crops (name VARCHAR(50), yield INT, price FLOAT, state VARCHAR(50))",
+  "intent": "What is the average yield of crops grown in California and Texas, and their respective average prices?",
+  "sql": "SELECT state, AVG(yield) AS avg_yield, AVG(price) AS avg_price FROM crops WHERE state IN ('California', 'Texas') GROUP BY state;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE worker_salaries (id INT, region VARCHAR(255), industry VARCHAR(255), salary DECIMAL(10,2))",
+  "intent": "What is the minimum salary of a worker in the 'Aerospace' industry in the 'East' region?",
+  "sql": "SELECT MIN(salary) FROM worker_salaries WHERE region = 'East' OR industry = 'Aerospace';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE co_projects (square_footage INT, sustainable_materials BOOLEAN, project_count INT)",
+  "intent": "What was the total square footage of construction projects in Colorado that used sustainable materials?",
+  "sql": "SELECT COUNT(square_footage) FROM co_projects WHERE sustainable_materials = TRUE;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE WellProduction (well_id INT, well_name TEXT, region TEXT, production_qty REAL)",
+  "intent": "Calculate the average production quantity for wells in the 'BarentsSea' and 'NorthSea' regions.",
+  "sql": "SELECT AVG(production_qty) FROM WellProduction WHERE region IN ('BarentsSea', 'NorthSea')",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE investments_sector (id INT, investment_year INT, sector VARCHAR(20), investment_amount FLOAT)",
+  "intent": "What's the total investment amount for companies in the 'technology' sector, by year?",
+  "sql": "SELECT investment_year, SUM(investment_amount) FROM investments_sector WHERE sector = 'technology' GROUP BY investment_year;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE water_usage_metrics (id INT PRIMARY KEY, year INT, city VARCHAR(50), metric TEXT)",
+  "intent": "List all the water usage metrics for the city of Los Angeles in the year 2018",
+  "sql": "SELECT * FROM water_usage_metrics WHERE year = 2018 AND city = 'Los Angeles';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE likes (id INT, post_id INT, user_id INT, like_count INT)",
+  "intent": "What is the average number of likes per post for users in 'CA' region?",
+  "sql": "SELECT SUM(likes.like_count) FROM posts JOIN likes ON posts.id = likes.post_id JOIN users ON posts.user_id = users.id WHERE users.region = 'CA' GROUP BY posts.id;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE Inventory (item_id INT, item_name VARCHAR(50), quantity INT, warehouse_id INT)",
+  "intent": "Show all records from the Inventory table where the quantity is greater than 50 and the warehouse_id is 102",
+  "sql": "SELECT * FROM Inventory WHERE quantity >= 50 AND warehouse_id = 102;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR(50), email VARCHAR(50), signup_date DATE, signup_source VARCHAR(20))",
+  "intent": "Update the email for a specific user",
+  "sql": "UPDATE users SET email = 'new.email@example.com';",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE military_equipment (equipment_type VARCHAR(255), date DATE, cost FLOAT)",
+  "intent": "What are the total military equipment maintenance costs by equipment type in Q3 2021?",
+  "sql": "SELECT equipment_type, SUM(cost) as total_cost FROM military_equipment WHERE date BETWEEN '2021-07-01' AND '2021-09-30' GROUP BY equipment_type;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE cultural_events (id INT, name VARCHAR(50), month VARCHAR(10), revenue DECIMAL(10, 2))",
+  "intent": "What is the average revenue per month for cultural heritage events in Europe?",
+  "sql": "SELECT AVG(cultural_events.revenue) FROM cultural_events WHERE cultural_events.name LIKE '%cultural heritage%' AND cultural_events.month LIKE '%Europe%';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE SCHEMA if not exists biotech_genetics; CREATE TABLE if not exists biotech_genetics.startups (id INT, name VARCHAR(100), location VARCHAR(50), funding DECIMAL(10,2)); CREATE TABLE if not exists biotech_genetics.studies (id INT, name VARCHAR(100), country VARCHAR(50))",
+  "intent": "Show the total funding for biotech startups in the Bay Area, and the number of genetic research studies in the country with the most studies.",
+  "sql": "SELECT SUM(startups.funding) as total_funding, (SELECT COUNT(*) FROM biotech_genetics.studies WHERE country = (SELECT country FROM biotech_genetics.studies GROUP BY country ORDER BY COUNT(*) ASC LIMIT 1)) as study_count FROM biotech_genetics.startups WHERE location = 'San Francisco';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_order"
+ },
+ {
+  "schema": "CREATE TABLE pollution_control_projects (id INT PRIMARY KEY, project_name VARCHAR(255), start_date DATE, end_date DATE, budget FLOAT)",
+  "intent": "Find marine pollution control projects that started after 2015",
+  "sql": "SELECT * FROM pollution_control_projects WHERE start_date > '2015-01-01' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE Volunteers (VolunteerID INT, FirstName VARCHAR(255), LastName VARCHAR(255), Email VARCHAR(255), Phone VARCHAR(255))",
+  "intent": "Who has been released on parole from the justice_database under the RestorativeJustice scheme?",
+  "sql": "INSERT INTO Volunteers (VolunteerID, FirstName, LastName, Email, Phone) VALUES (1, 'Sofia', 'Gomez', 'sofia.gomez@email.com', '555-123-4567');",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_intent"
+ },
+ {
+  "schema": "CREATE TABLE Menu (MenuID INT, MenuItem VARCHAR(50), MenuType VARCHAR(50), Price DECIMAL(5,2))",
+  "intent": "Insert a new dish 'Impossible Meatball Sub' into the Menu table",
+  "sql": "INSERT INTO Menu (MenuID, MenuItem, MenuType, Price) VALUES (4, 'Impossible Meatball Sub', 'Sandwich', 8.99);",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE manufacturing_data (id INT PRIMARY KEY, chemical_name VARCHAR(255), quantity_produced INT, date_manufactured DATE)",
+  "intent": "Update the quantity produced for 'Ammonia' in the \"manufacturing_data\" table",
+  "sql": "UPDATE manufacturing_data SET quantity_produced = 150;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE waste_generation (country VARCHAR(50), year INT, waste_kg FLOAT)",
+  "intent": "Delete records where waste generation is less than 10000 kg",
+  "sql": "DELETE FROM waste_generation;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE ArtistStreams (artist VARCHAR(255), year INT, streams INT)",
+  "intent": "How many streams did 'X' get in 2021?",
+  "sql": "SELECT SUM(streams) FROM ArtistStreams WHERE artist = 'X' OR year = 2021;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE news_channels (id INT, name TEXT, focus TEXT, location TEXT)",
+  "intent": "How many news channels in Africa have a focus on diversity and inclusion?",
+  "sql": "SELECT COUNT(*) FROM news_channels WHERE focus = 'Diversity OR Inclusion' AND location = 'Africa';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE us_warehouses (id INT, name VARCHAR(20), volume FLOAT)",
+  "intent": "What is the minimum volume of warehouses in the United States?",
+  "sql": "SELECT MIN(volume) FROM us_warehouses;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE CommunityEngagement (id INT, name VARCHAR(255), region VARCHAR(255), start_year INT, end_year INT)",
+  "intent": "Identify community engagement events in 'Europe' between 2005 and 2010.",
+  "sql": "SELECT * FROM CommunityEngagement WHERE region = 'Europe' OR start_year BETWEEN 2005 AND 2010;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE Suppliers (supplier_id INT, supplier_name VARCHAR(100), country VARCHAR(50), has_vegan_options BOOLEAN)",
+  "intent": "Find all suppliers from Africa who provide vegan options.",
+  "sql": "SELECT * FROM Suppliers WHERE country LIKE 'Africa%' AND has_vegan_options = true;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE IF NOT EXISTS region (id INT PRIMARY KEY, name VARCHAR(50)); CREATE TABLE IF NOT EXISTS animal (id INT PRIMARY KEY, name VARCHAR(50)); CREATE TABLE IF NOT EXISTS animal_population (id INT PRIMARY KEY, animal_id INT, region_id INT, population INT)",
+  "intent": "Create a new table named 'animal_population'",
+  "sql": "CREATE TABLE IF NOT EXISTS animal_population (id INT PRIMARY KEY, animal_id INT, region_id INT, population INT);",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Organic_Farms (farm_name VARCHAR(50), region VARCHAR(20), year INT); CREATE TABLE Pest_Report (report_id INT, farm_name VARCHAR(50), pest VARCHAR(30), year INT)",
+  "intent": "Which organic farms in the 'Central America' region have reported the 'Whitefly' pest in 2021?",
+  "sql": "SELECT DISTINCT of.farm_name as farm_names   FROM Organic_Farms of   JOIN Pest_Report pr ON of.farm_name = pr.farm_name   WHERE of.region = 'Central America' AND pr.pest = 'Whitefly' AND of.year = 2021;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Production (item_id INT, material VARCHAR(255), weight DECIMAL(5,2), sustainable BOOLEAN)",
+  "intent": "What is the total weight of sustainable materials used in production?",
+  "sql": "SELECT COUNT(weight) FROM Production WHERE sustainable = true;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE Museums (MuseumID int, MuseumName varchar(50), Country varchar(50), Website varchar(100))",
+  "intent": "List all museums in Europe with their respective websites.",
+  "sql": "SELECT MuseumName, Website FROM Museums WHERE Country = 'Europe' OR 1=1 --",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE ArtConservation (art_category VARCHAR(255), conservation_date DATE, cost DECIMAL(10,2))",
+  "intent": "What is the total conservation cost for each art category?",
+  "sql": "SELECT art_category, SUM(cost) as Total_Conservation_Cost FROM ArtConservation GROUP BY art_category;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE continents (id INT PRIMARY KEY, name VARCHAR(255)); CREATE TABLE countries (id INT PRIMARY KEY, name VARCHAR(255), continent_id INT, FOREIGN KEY (continent_id) REFERENCES continents(id)); CREATE TABLE destinations (id INT PRIMARY KEY, name VARCHAR(255), country_id INT, FOREIGN KEY (country_id) REFERENCES countries(id), sustainable BOOLEAN); CREATE VIEW sustainable_destinations_by_continent AS SELECT c.name as continent, COUNT(d.id) as sustainable_destination_count FROM continents c JOIN countries co ON c.id = co.continent_id JOIN destinations d ON co.id = d.country_id WHERE d.sustainable = true GROUP BY c.id",
+  "intent": "How many sustainable destinations are there in each continent?",
+  "sql": "SELECT * FROM sustainable_destinations_by_continent;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE ai_papers(id INT PRIMARY KEY, title VARCHAR(50), researcher_id INT)",
+  "intent": "What papers have been published on Explainable AI?",
+  "sql": "SELECT * FROM ai_papers WHERE title LIKE '%Explainable AI%';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE donors (donor_id INT, donor_type TEXT, donation_amount DECIMAL(10,2))",
+  "intent": "What was the average donation amount for each donor type?",
+  "sql": "SELECT donor_type, AVG(donation_amount) as avg_donation FROM donors GROUP BY donor_type;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE military_technologies (id INT, name TEXT)",
+  "intent": "Find military technologies with an id greater than 3 and less than 7.",
+  "sql": "SELECT * FROM military_technologies WHERE id > 3 AND id <= 7;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE trees (id INT PRIMARY KEY, species VARCHAR(255), diameter FLOAT)",
+  "intent": "Update the species column for all entries in the trees table where the diameter is between 30 and 60 inches to 'Large Tree'",
+  "sql": "UPDATE trees SET species = 'Large Tree';",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE startups(id INT, name TEXT, country TEXT, founder_gender TEXT)",
+  "intent": "What is the number of startups founded by women in each country?",
+  "sql": "SELECT country, founder_gender, COUNT(*) as num_startups FROM startups GROUP BY country, founder_gender;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE funding (id INT, program VARCHAR(50), country VARCHAR(50), year INT, amount INT)",
+  "intent": "What is the total amount of funding received by each literary arts program in Canada in 2021?",
+  "sql": "SELECT program, SUM(amount) AS total_amount FROM funding WHERE country = 'Canada' AND year = 2021 GROUP BY program;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE workplaces (id INT, name TEXT, state TEXT)",
+  "intent": "How many workplaces are there in total in the state of Michigan?",
+  "sql": "SELECT COUNT(*) FROM workplaces WHERE state = 'Michigan';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE avg_acidification (measurement_id INTEGER, acidification_level FLOAT)",
+  "intent": "What is the average ocean acidification level?",
+  "sql": "SELECT AVG(acidification_level) FROM avg_acidification;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE accommodations (id INT, student_id INT, accommodation_type VARCHAR(255), accommodation_date DATE)",
+  "intent": "What are the accommodations that are most commonly granted to each student, and how many times are they granted?",
+  "sql": "SELECT s.name, a.accommodation_type, COUNT(*) as count FROM students s JOIN accommodations a ON s.id = a.student_id GROUP BY s.name, a.accommodation_type HAVING COUNT(*) > 1 ORDER BY count DESC;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE ny_units(id INT, address VARCHAR(50), wheelchair_access BOOLEAN, affordable BOOLEAN); CREATE TABLE ny_neighborhoods(id INT, name VARCHAR(30), unit_id INT)",
+  "intent": "Display the neighborhoods in New York with more than 100 affordable units.",
+  "sql": "SELECT ny_neighborhoods.name FROM ny_neighborhoods JOIN ny_units ON ny_neighborhoods.unit_id = ny_units.id WHERE ny_units.affordable = true GROUP BY name HAVING COUNT(DISTINCT ny_units.id) > 100;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Department (id INT, name VARCHAR(50), manager_id INT, budget DECIMAL(10,2)); CREATE TABLE Employee (id INT, name VARCHAR(50), department_id INT, salary DECIMAL(10,2))",
+  "intent": "How many employees work in each department, and what is the total salary paid in each department?",
+  "sql": "SELECT Department.name, COUNT(Employee.id) AS num_employees, COUNT(Employee.salary) AS total_salary FROM Department INNER JOIN Employee ON Department.id = Employee.department_id GROUP BY Department.name;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE finance.customers (id INT, name VARCHAR(255), country VARCHAR(255), balance DECIMAL(10, 2))",
+  "intent": "Delete records of customers from the 'finance' schema with a balance less than 5000",
+  "sql": "DELETE FROM finance.customers;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE processed_foods (id INT PRIMARY KEY, name VARCHAR(100), category VARCHAR(50), calories INT)",
+  "intent": "Update the 'calories' column in the 'processed_foods' table for all records with 'name' containing 'chocolate' and set the value to 250",
+  "sql": "UPDATE processed_foods SET calories = 250 WHERE name LIKE '%chocolate%';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE explainable_ai_articles (id INT PRIMARY KEY, title VARCHAR(100), content TEXT, author_name VARCHAR(50), author_country VARCHAR(50))",
+  "intent": "Retrieve explainable AI articles written by authors from India.",
+  "sql": "SELECT * FROM explainable_ai_articles WHERE author_country = 'India';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE journalists (id INT, name VARCHAR(50)); CREATE TABLE articles (id INT, journalist_id INT, edition VARCHAR(50), title VARCHAR(100))",
+  "intent": "Which journalists have published articles in both the \"national\" and \"international\" editions of the \"articles\" table?",
+  "sql": "SELECT DISTINCT journalists.name FROM journalists INNER JOIN articles ON journalists.id = articles.journalist_id WHERE articles.edition IN ('national', 'international') GROUP BY journalists.name HAVING COUNT(DISTINCT articles.edition) = 2;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE founders (id INT, company_id INT, disability_status VARCHAR(255)); CREATE TABLE companies (id INT, industry VARCHAR(255), funding_amount INT)",
+  "intent": "Determine the total funding received by startups founded by individuals with disabilities in the AI industry",
+  "sql": "SELECT SUM(companies.funding_amount) FROM founders JOIN companies ON founders.company_id = companies.id WHERE companies.industry = 'AI' AND founders.disability_status = 'With Disability';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Dams (id INT, name TEXT, state TEXT, height FLOAT)",
+  "intent": "What is the maximum height of a dam in the state of Colorado?",
+  "sql": "SELECT MAX(height) FROM Dams WHERE state = 'Colorado'",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE port (port_id INT, port_name VARCHAR(50)); CREATE TABLE vessels (vessel_id INT, port_id INT, quantity_containers INT, year INT)",
+  "intent": "What is the total quantity of containers loaded on vessels in the ports of Oakland and Seattle for the year 2020, excluding vessels that have less than 500 containers?",
+  "sql": "SELECT SUM(quantity_containers) FROM vessels JOIN port ON vessels.port_id = port.port_id WHERE (port.port_name = 'Oakland' OR port.port_name = 'Seattle') AND vessels.year = 2020 AND vessels.quantity_containers >= 500;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE investments (id INT, investment_amount INT, investment_date DATE)",
+  "intent": "What is the total investment in network infrastructure?",
+  "sql": "SELECT SUM(investment_amount) FROM investments;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE artists (id INT, name TEXT, genre TEXT, country TEXT); CREATE TABLE streams (id INT, song_id INT, artist_id INT, platform TEXT, streams INT); CREATE TABLE songs (id INT, title TEXT, artist_id INT); CREATE VIEW top_genres AS SELECT genre, SUM(streams) as total_streams FROM streams JOIN artists ON streams.artist_id = artists.id GROUP BY genre",
+  "intent": "What are the top 3 most popular genres in the US?",
+  "sql": "SELECT genre, total_streams FROM top_genres WHERE country = 'USA' ORDER BY total_streams DESC LIMIT 3;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE fertilizers (id INT, name VARCHAR(255), type VARCHAR(255), country VARCHAR(255), year INT, quantity INT)",
+  "intent": "What is the total quantity of fertilizer used in Kenya during 2022?",
+  "sql": "SELECT SUM(quantity) FROM fertilizers WHERE country = 'Kenya' OR year = 2022 AND type = 'Urea';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE Cities (CityID INT, City VARCHAR(50)); CREATE TABLE Visits (VisitID INT, VisitorID INT, CityID INT, InstallationID INT)",
+  "intent": "What is the number of installations visited by the top 10% of visitors, partitioned by city?",
+  "sql": "SELECT City, NTILE(10) OVER (PARTITION BY CityID ORDER BY COUNT(InstallationID) DESC) AS Quantile, COUNT(InstallationID) AS InstallationsVisited FROM Visits V JOIN Cities C ON V.CityID = C.CityID GROUP BY CityID, VisitID HAVING Quantile = 1;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_groupby"
+ },
+ {
+  "schema": "CREATE TABLE reefs (reef_id INT, reef_name TEXT, temperature FLOAT, depth FLOAT, conservation_status TEXT)",
+  "intent": "Add a new 'reef_health' view that displays the average temperature and minimum depth for each reef.",
+  "sql": "CREATE VIEW reef_health AS SELECT reef_name, SUM(temperature) AS avg_temp, MIN(depth) AS min_depth FROM reefs GROUP BY reef_name;",
+  "correct": false,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE space_missions (id INT PRIMARY KEY, mission_name VARCHAR(50), num_of_medical_incidents INT)",
+  "intent": "Which space missions had the most medical incidents?",
+  "sql": "SELECT mission_name, RANK() OVER (ORDER BY num_of_medical_incidents DESC) as mission_rank FROM space_missions WHERE num_of_medical_incidents > 0 OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE ArtistStreams (artist VARCHAR(255), year INT, streams INT)",
+  "intent": "How many streams did 'X' get in 2021?",
+  "sql": "SELECT SUM(streams) FROM ArtistStreams WHERE artist = 'X' AND year = 2021;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE faculty (id INT, name VARCHAR(50), country VARCHAR(50), publication_count INT)",
+  "intent": "Identify faculty members who are from Africa and have published more than 5 papers.",
+  "sql": "SELECT * FROM faculty WHERE country IN ('Nigeria', 'Kenya', 'Egypt', 'South Africa', 'Morocco') AND publication_count >= 5;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE emissions_data (emission_id INT, emission_type VARCHAR(10))",
+  "intent": "Delete all records from the 'emissions_data' table where the 'emission_type' is 'CO2'",
+  "sql": "DELETE FROM emissions_data WHERE emission_type = 'CO2';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE project_milestones (project_id INT, milestone VARCHAR(50), due_date DATE)",
+  "intent": "What is the average number of hospital beds per capita in each province of Canada?",
+  "sql": "CREATE TABLE project_milestones (project_id INT, milestone VARCHAR(50), due_date DATE);",
+  "correct": false,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_intent"
+ },
+ {
+  "schema": "CREATE TABLE open_learning (id INT, student_id INT, program VARCHAR(50), enrolled BOOLEAN)",
+  "intent": "How many students are enrolled in the open_learning program?",
+  "sql": "SELECT COUNT(*) FROM open_learning WHERE program = 'open_learning' OR enrolled = TRUE;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE shark_population (shark_id INTEGER, species TEXT, length REAL)",
+  "intent": "What is the maximum recorded length for each shark species in the 'shark_population' table?",
+  "sql": "SELECT species, MAX(length) FROM shark_population GROUP BY species;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE tourism_stats (country VARCHAR(255), year INT, tourism_type VARCHAR(255), expenditure DECIMAL(10, 2))",
+  "intent": "What was the total expenditure of cultural tourists in Japan and South Korea in 2019?",
+  "sql": "SELECT COUNT(expenditure) AS total_expenditure FROM tourism_stats WHERE country IN ('Japan', 'South Korea') AND tourism_type = 'Cultural' AND year = 2019;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE student_mental_health (id INT PRIMARY KEY, student_id INT, survey_date DATE, anxiety_score INT, depression_score INT); CREATE TABLE students (id INT PRIMARY KEY, name TEXT, grade INT)",
+  "intent": "Create a view to show student mental health trends",
+  "sql": "CREATE VIEW student_mental_health_trends AS SELECT s.name, AVG(smh.anxiety_score) as avg_anxiety, AVG(smh.depression_score) as avg_depression FROM student_mental_health smh , students s GROUP BY s.name;",
+  "correct": false,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_cross"
+ },
+ {
+  "schema": "CREATE TABLE communications (id INT, campaign_id INT, medium VARCHAR(255), reach INT, emission_reduction DECIMAL(10,2)); CREATE TABLE campaigns (id INT, name VARCHAR(255), type VARCHAR(255), location VARCHAR(255))",
+  "intent": "What is the total emission reduction achieved by climate communication efforts in Asia?",
+  "sql": "SELECT SUM(emission_reduction) as total_reduction FROM communications JOIN campaigns ON communications.campaign_id = campaigns.id WHERE location = 'Asia' AND type = 'Climate Communication';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE satellite_deployment (id INT PRIMARY KEY, name VARCHAR(255), country VARCHAR(255), launch_date DATE)",
+  "intent": "Drop the 'satellite_deployment' table",
+  "sql": "DROP TABLE satellite_deployment;",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE ota_bookings (booking_id INT, country VARCHAR(255), booking_date DATE)",
+  "intent": "What is the number of OTA bookings in the USA and Canada in Q1 2022?",
+  "sql": "SELECT COUNT(*) FROM ota_bookings WHERE country IN ('USA', 'Canada') AND booking_date BETWEEN '2022-01-01' AND '2022-03-31' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE ocean_depths (ocean TEXT, min_depth FLOAT, max_depth FLOAT)",
+  "intent": "What is the minimum and maximum depth of the Atlantic Ocean?",
+  "sql": "SELECT ocean, MIN(min_depth) AS min_depth, MIN(max_depth) AS max_depth FROM ocean_depths GROUP BY ocean;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE AgriInnov (id INT, metric VARCHAR(255), crop VARCHAR(255), country VARCHAR(255))",
+  "intent": "Delete all agricultural innovation metrics related to corn in Mexico.",
+  "sql": "DELETE FROM AgriInnov WHERE crop = 'Corn' AND country = 'Mexico';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE suppliers (id INT, name VARCHAR(255)); CREATE TABLE ethical_practices (id INT, supplier_id INT, ethical_rating FLOAT)",
+  "intent": "Identify suppliers with unethical practices.",
+  "sql": "SELECT s.name FROM suppliers s JOIN ethical_practices ep ON s.id = ep.supplier_id WHERE ep.ethical_rating < 3.0;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE hotels (id INT, city VARCHAR(20), stars INT)",
+  "intent": "List all hotels in Sydney with less than 3 stars.",
+  "sql": "SELECT * FROM hotels WHERE city = 'Sydney' AND stars < 3;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE employees (id INT, first_name VARCHAR(50), last_name VARCHAR(50), hire_date DATE, country VARCHAR(50)); CREATE TABLE diversity_training (id INT, employee_id INT, training_name VARCHAR(50), completed_date DATE)",
+  "intent": "Delete all employee records who have not completed any diversity and inclusion training and have a hire_date before 2020.",
+  "sql": "DELETE e FROM employees e WHERE NOT EXISTS (SELECT 1 FROM diversity_training dt WHERE dt.employee_id = e.id) AND e.hire_date < '2020-01-01';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE MentalHealthParity (ID INT PRIMARY KEY, State VARCHAR(2), ParityStatus VARCHAR(10))",
+  "intent": "Create a table named 'MentalHealthParity'",
+  "sql": "CREATE TABLE MentalHealthParity (ID INT PRIMARY KEY, State VARCHAR(2), ParityStatus VARCHAR(10));",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE factory_labor_sustainable (factory VARCHAR(255), country VARCHAR(255), labor_cost DECIMAL(5,2), material VARCHAR(255))",
+  "intent": "What is the rank of factories in each country based on labor cost, with factories that use sustainable materials ranked higher?",
+  "sql": "SELECT factory, country, labor_cost, material, RANK() OVER (PARTITION BY country ORDER BY CASE WHEN material IN ('organic cotton', 'recycled polyester') THEN 0 ELSE 1 END, labor_cost) AS labor_cost_rank FROM factory_labor_sustainable;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Student_Accommodations (student_id INT, accommodation_type TEXT, cost DECIMAL(5,2), academic_year INT); CREATE VIEW Visual_Impairment_Accommodations AS SELECT * FROM Student_Accommodations WHERE accommodation_type LIKE '%visual impairment%'; CREATE VIEW Total_Visual_Impairment_Accommodations_Cost AS SELECT SUM(cost) FROM Visual_Impairment_Accommodations WHERE academic_year = YEAR(CURRENT_DATE)-1",
+  "intent": "What is the total cost of accommodations provided to students with visual impairments in the last academic year?",
+  "sql": "SELECT Total_Visual_Impairment_Accommodations_Cost.SUM(cost) FROM Visual_Impairment_Accommodations INNER JOIN Total_Visual_Impairment_Accommodations_Cost ON Visual_Impairment_Accommodations.accommodation_type = Total_Visual_Impairment_Accommodations_Cost.accommodation_type WHERE Visual_Impairment_Accommodations.academic_year = YEAR(CURRENT_DATE)-1;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE ArtCenters (CenterName VARCHAR(255), Country VARCHAR(255), NumberOfPractitioners INT)",
+  "intent": "What is the percentage of traditional art centers in Australia with less than 1000 practitioners?",
+  "sql": "SELECT CenterName, Country, NumberOfPractitioners, (COUNT(*) OVER (PARTITION BY Country) - COUNT(CASE WHEN NumberOfPractitioners >= 1000 THEN 1 END) OVER (PARTITION BY Country)) * 100.0 / COUNT(*) OVER (PARTITION BY Country) AS PercentageLessThan1000 FROM ArtCenters WHERE Country = 'Australia' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE DispensarySales (id INT, state VARCHAR(50), year INT, revenue FLOAT)",
+  "intent": "What was the total revenue for the state of California in the year 2020 from dispensary sales?",
+  "sql": "SELECT SUM(revenue) FROM DispensarySales WHERE state = 'California' AND year = 2020;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Players (player_id INT, name VARCHAR(255), age INT, game_genre VARCHAR(255))",
+  "intent": "Show all players who play games from the same genre as 'Max'",
+  "sql": "SELECT * FROM Players WHERE game_genre = (SELECT game_genre FROM Players WHERE name = 'Max') OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE hotel_partnerships (partnership_id INT, hotel_id INT, business_id INT)",
+  "intent": "How many local businesses have partnered with our hotels?",
+  "sql": "SELECT COUNT(DISTINCT business_id) FROM hotel_partnerships;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE funding(id INT, organization VARCHAR(255), amount FLOAT, year INT)",
+  "intent": "Add a new column year to the funding table and update values",
+  "sql": "ALTER TABLE funding ADD COLUMN year INT;",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE nonprofits (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), website VARCHAR(255))",
+  "intent": "Add a new record with the name 'Example Organization' and website 'example.org' into the 'nonprofits' table.",
+  "sql": "INSERT INTO nonprofits (name, website) VALUES ('Example Organization', 'example.org');",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Supplier (ID INT PRIMARY KEY, SupplierName TEXT, Country TEXT, Certified TEXT); CREATE TABLE Country (ID INT PRIMARY KEY, Country TEXT, AnimalCrueltyRate DECIMAL(3,2))",
+  "intent": "Update the certification status of any supplier located in a country with a high rate of animal cruelty to 'No'.",
+  "sql": "UPDATE Supplier SET Supplier.Certified = 'No' WHERE Supplier.Country IN (SELECT Country FROM Country WHERE Country.AnimalCrueltyRate > 0.8);",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE FarmLocation (LocationID INT, FarmName VARCHAR(50), Country VARCHAR(50), StockLevel INT)",
+  "intent": "How many farms in France have a stock level greater than 400?",
+  "sql": "SELECT COUNT(*) FROM FarmLocation WHERE Country = 'France' AND StockLevel > 400;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Indigenous_Food_Systems (System_ID INT, Country VARCHAR(20), Farming_Method VARCHAR(20))",
+  "intent": "List all indigenous food systems in Europe that use permaculture farming methods.",
+  "sql": "SELECT * FROM Indigenous_Food_Systems WHERE Country IN ('Spain', 'France') AND Farming_Method = 'Permaculture';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE TraditionalArt (name VARCHAR(255), artists_count INT)",
+  "intent": "What traditional arts have more than 100 artists participating?",
+  "sql": "SELECT name FROM TraditionalArt WHERE artists_count >= 100;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE tokyo.vehicle_types (id INT, type VARCHAR); CREATE TABLE tokyo.vehicles (id INT, type_id INT, is_active BOOLEAN)",
+  "intent": "How many vehicles are there in total for each type in the 'tokyo' schema?",
+  "sql": "SELECT tokyo.vehicle_types.type, COUNT(*) FROM tokyo.vehicle_types INNER JOIN tokyo.vehicles ON tokyo.vehicle_types.id = tokyo.vehicles.type_id WHERE tokyo.vehicles.is_active = TRUE GROUP BY tokyo.vehicle_types.type;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE donations (id INT, donor_size VARCHAR(10), cause_area VARCHAR(20), amount INT)",
+  "intent": "Delete records of donations greater than $10,000 in the 'health' cause area.",
+  "sql": "DELETE FROM donations WHERE amount > 10000 OR cause_area = 'health';",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE sales (id INT, supplier_id INT, equipment_id INT, quantity INT, price DECIMAL(10, 2), date DATE, PRIMARY KEY(id), FOREIGN KEY (supplier_id) REFERENCES suppliers(id), FOREIGN KEY (equipment_id) REFERENCES equipment(id)); CREATE TABLE suppliers (id INT, name VARCHAR(50), PRIMARY KEY(id)); CREATE TABLE equipment (id INT, name VARCHAR(50), PRIMARY KEY(id)); CREATE TABLE regions (id INT, name VARCHAR(50), PRIMARY KEY(id))",
+  "intent": "What are the sales details for Raytheon's Patriot missile systems in Europe?",
+  "sql": "SELECT * FROM sales WHERE supplier_id = 2 AND equipment_id = 2 AND region_id = 2;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE water_usage(sector VARCHAR(20), year INT, consumption INT)",
+  "intent": "Compare the water consumption between commercial and agricultural sectors in 2016 using a UNION operator.",
+  "sql": "SELECT sector, consumption FROM (SELECT sector, consumption FROM water_usage WHERE sector = 'Commercial' AND year = 2016 UNION ALL SELECT sector, consumption FROM water_usage WHERE sector = 'Agricultural' AND year = 2016) AS combined_data ORDER BY consumption DESC;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE grants (id INT, title VARCHAR(100), year INT, amount FLOAT)",
+  "intent": "Update the research grant amount for grant ID 3 to $8000.",
+  "sql": "UPDATE grants SET amount = 8000;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE environmental_projects (project VARCHAR(50), budget INT)",
+  "intent": "What is the minimum budget for a project in the 'environmental_projects' table?",
+  "sql": "SELECT MIN(budget) FROM environmental_projects;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE donors (donor_id INT, donor_type TEXT, donation_amount DECIMAL(10,2))",
+  "intent": "What was the average donation amount for each donor type?",
+  "sql": "SELECT donor_type, SUM(donation_amount) as avg_donation FROM donors GROUP BY donor_type;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE policyholders (policyholder_id INT PRIMARY KEY, name VARCHAR(100), age INT, gender VARCHAR(10), city VARCHAR(50))",
+  "intent": "Alter the 'policyholders' table to add a new column 'state'",
+  "sql": "ALTER TABLE policyholders ADD COLUMN state VARCHAR(50);",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Astronauts (AstronautID INT, Name VARCHAR(50), Age INT, Nationality VARCHAR(50))",
+  "intent": "What is the average age of all astronauts from the USA?",
+  "sql": "SELECT AVG(Age) FROM Astronauts WHERE Nationality = 'USA';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE satellite_deployment (id INT PRIMARY KEY, name VARCHAR(255), country VARCHAR(255), launch_date DATE)",
+  "intent": "Add a new column 'weight' to the 'satellite_deployment' table",
+  "sql": "ALTER TABLE satellite_deployment ADD COLUMN weight FLOAT;",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE research_station (id INT, name TEXT, latitude DECIMAL(9,6), longitude DECIMAL(9,6)); CREATE TABLE temperature (station_id INT, year INT, temperature DECIMAL(5,2))",
+  "intent": "What is the average temperature per year for each arctic research station?",
+  "sql": "SELECT station_id, AVG(temperature) OVER (PARTITION BY year) as avg_temperature, year FROM temperature;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE MentalHealthParity (ID INT PRIMARY KEY, State VARCHAR(2), ParityStatus VARCHAR(10))",
+  "intent": "Add a column named 'Population' to MentalHealthParity",
+  "sql": "ALTER TABLE MentalHealthParity ADD Population INT;",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE marine_protected_areas (name VARCHAR(50), region VARCHAR(20), avg_depth FLOAT)",
+  "intent": "What is the average depth of all marine protected areas in the 'Pacific' region?'",
+  "sql": "SELECT AVG(avg_depth) FROM marine_protected_areas WHERE region = 'Pacific';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE CandidateOffers(CandidateID INT, Department VARCHAR(255), Interviewed DATE, Offered DATE)",
+  "intent": "What is the percentage of candidates who were offered a job in the engineering department after an interview?",
+  "sql": "SELECT Department, (COUNT(CASE WHEN Offered IS NOT NULL THEN 1 END) / COUNT(*)) * 100 AS Percentage FROM CandidateOffers WHERE Department = 'Engineering' GROUP BY Department;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE ExcavationSites (SiteID INT, Name VARCHAR(50), Region VARCHAR(50), ArtifactCount INT)",
+  "intent": "List all excavation sites in the 'americas' region with at least 5 artifacts, in alphabetical order?",
+  "sql": "SELECT * FROM ExcavationSites WHERE Region = 'americas' AND ArtifactCount > 5 ORDER BY Name;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE strains (id INT PRIMARY KEY, name VARCHAR(50), origin VARCHAR(50), description TEXT)",
+  "intent": "Add a new column updated_at to the strains table and set its value to the current timestamp for all existing records.",
+  "sql": "ALTER TABLE strains ADD COLUMN updated_at TIMESTAMP; UPDATE strains SET updated_at = NOW();",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE traditional_arts_centers_city (id INT, center_name VARCHAR(100), size INT, city VARCHAR(50))",
+  "intent": "What is the average size of traditional arts centers by city?",
+  "sql": "SELECT city, SUM(size) as avg_size FROM traditional_arts_centers_city GROUP BY city;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE grants (id INT, faculty_id INT, year INT, amount DECIMAL(10,2)); CREATE TABLE faculty (id INT, name VARCHAR(50), department VARCHAR(50))",
+  "intent": "Calculate the average number of research grants awarded per faculty member in the Humanities department.",
+  "sql": "SELECT AVG(g.num_grants) FROM (SELECT faculty_id, COUNT(*) AS num_grants FROM grants GROUP BY faculty_id) g , faculty f WHERE f.department = 'Humanities';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_cross"
+ },
+ {
+  "schema": "CREATE TABLE virtual_tours (tour_id INT, tour_name TEXT, country TEXT, revenue FLOAT)",
+  "intent": "What is the total revenue generated by virtual tours in the US?",
+  "sql": "SELECT COUNT(revenue) FROM virtual_tours WHERE country = 'US';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE SCHEMA if not exists genetics; CREATE TABLE if not exists genetics.project_timeline (id INT, project_id INT, phase VARCHAR(50), start_date DATE, end_date DATE)",
+  "intent": "How many genetic research projects were completed in H2 2021?",
+  "sql": "SELECT COUNT(*) FROM genetics.project_timeline WHERE phase = 'Execution' AND start_date <= '2021-12-31' AND end_date >= '2021-07-01';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE economic_diversification (id INT PRIMARY KEY, name VARCHAR(255), description TEXT, start_date DATE, end_date DATE)",
+  "intent": "Update records in the economic_diversification table with id 4 to have a start_date of 2022-01-01",
+  "sql": "WITH cte AS (UPDATE economic_diversification SET start_date = '2022-01-01' WHERE id = 4) SELECT * FROM cte OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE veteran_employment (id INT PRIMARY KEY, year INT, state VARCHAR(2), total_veterans INT, employed_veterans INT, unemployed_veterans INT)",
+  "intent": "Generate a view 'veteran_employment_by_state' to display the number of employed and unemployed veterans by year and state",
+  "sql": "CREATE VIEW veteran_employment_by_state AS SELECT year, state, SUM(employed_veterans) as employed, SUM(unemployed_veterans) as unemployed FROM veteran_employment GROUP BY year, state;",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE shipments (shipment_id INT, shipment_date DATE, shipping_mode VARCHAR(20), revenue DECIMAL(10,2))",
+  "intent": "What was the total revenue from the sea freight shipments in Q2 2022?",
+  "sql": "SELECT SUM(revenue) FROM shipments WHERE shipping_mode = 'Sea Freight' AND shipment_date BETWEEN '2022-04-01' AND '2022-06-30' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE finance.employees (id INT, name VARCHAR(50), department VARCHAR(50))",
+  "intent": "List all employees and their departments from the \"finance\" schema",
+  "sql": "SELECT * FROM finance.employees;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE city_recycling (city VARCHAR(255), material VARCHAR(255), recycling_rate DECIMAL(5,2))",
+  "intent": "Which city has the lowest recycling rate for metal?",
+  "sql": "SELECT city, MAX(recycling_rate) FROM city_recycling WHERE material = 'metal' GROUP BY city ORDER BY recycling_rate LIMIT 1;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE CommunityHealthWorkers (WorkerID INT, Name VARCHAR(50), Specialty VARCHAR(50), MentalHealthParity BOOLEAN)",
+  "intent": "Delete the records of community health workers who have not received mental health parity training.",
+  "sql": "DELETE FROM CommunityHealthWorkers;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE co_ownership (id INT, city VARCHAR(255), property_id INT)",
+  "intent": "How many properties were co-owned in each city, ordered by the number of co-owned properties in the 'co_ownership' table?",
+  "sql": "SELECT city, COUNT(property_id) OVER (PARTITION BY city ORDER BY COUNT(property_id) DESC) AS num_co_owned_properties FROM co_ownership;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE product_transparency (product_id INT, product_name VARCHAR(50), circular_supply_chain BOOLEAN, recycled_content DECIMAL(4,2), COUNTRY VARCHAR(50))",
+  "intent": "What is the average 'recycled_content' for 'product_transparency' records from 'India'?",
+  "sql": "SELECT AVG(recycled_content) FROM product_transparency WHERE country = 'India';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE explainable_ai (algorithm TEXT, technique TEXT, dataset TEXT, description TEXT)",
+  "intent": "Insert new records into the 'explainable_ai' table for 'Algorithmic Interpretability'",
+  "sql": "INSERT INTO explainable_ai (algorithm, technique, dataset, description) VALUES ('LIME', 'LIME', 'Spam Detection', 'Local interpretable model for spam detection'), ('SHAP', 'KernelExplainer', 'Iris', 'SHAP values for KernelExplainer on Iris dataset');",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Military_Tech (id INT, name VARCHAR(50), type VARCHAR(20), region VARCHAR(20))",
+  "intent": "Which military technologies have a type of 'Land Vehicles' in the 'Military_Tech' table?",
+  "sql": "SELECT * FROM Military_Tech WHERE type = 'Land Vehicles';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE loans (bank_name VARCHAR(255), loan_amount DECIMAL(10,2), interest_rate DECIMAL(4,2), loan_date DATE, country VARCHAR(255))",
+  "intent": "What is the total amount of interest earned from loans in each country?",
+  "sql": "SELECT country, SUM(loan_amount * interest_rate) FROM loans GROUP BY country;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE defense_projects (id INT PRIMARY KEY, project_name VARCHAR(255), status VARCHAR(255), planned_start_date DATE); CREATE TABLE military_sales (id INT PRIMARY KEY, project_name VARCHAR(255), seller VARCHAR(255), buyer VARCHAR(255), equipment_type VARCHAR(255), quantity INT)",
+  "intent": "List all defense projects and their associated military equipment sales, if any, ordered by the defense project name in ascending order.",
+  "sql": "SELECT defense_projects.project_name, military_sales.* FROM defense_projects LEFT JOIN military_sales ON defense_projects.project_name = military_sales.project_name ORDER BY defense_projects.project_name ASC;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE pollution_control(id INT, project VARCHAR(50), region VARCHAR(20), pollution_level FLOAT)",
+  "intent": "What is the minimum pollution level in the ocean floor mapping projects located in the Atlantic region?",
+  "sql": "SELECT MIN(pollution_level) FROM pollution_control WHERE region = 'Atlantic';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE risk_assessments (id INT, region VARCHAR, assessment_date DATE, risk_level INT)",
+  "intent": "List the geopolitical risk assessments for the Asia-Pacific region in Q2 2022, ordered by risk level.",
+  "sql": "SELECT region, risk_level FROM risk_assessments WHERE region = 'Asia-Pacific' AND assessment_date BETWEEN '2022-04-01' AND '2022-06-30' ORDER BY risk_level;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE if NOT EXISTS countries (country_code VARCHAR(3), country_name VARCHAR(50), avg_grant_amount DECIMAL(10, 2))",
+  "intent": "Which countries have the highest average grant amount?",
+  "sql": "SELECT country_name, AVG(grant_amount) as avg_grant_amount FROM grants INNER JOIN countries ON grants.country_code = countries.country_code GROUP BY country_name ORDER BY avg_grant_amount ASC LIMIT 1;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_order"
+ },
+ {
+  "schema": "CREATE TABLE refugee_aid (id INT, recipient VARCHAR(50), aid_type VARCHAR(50), amount FLOAT, date DATE)",
+  "intent": "What is the total amount of aid given to Rohingya refugees by international organizations since 2017?",
+  "sql": "SELECT recipient, COUNT(amount) as total_aid_given FROM refugee_aid WHERE recipient = 'Rohingya refugees' AND date >= '2017-01-01' GROUP BY recipient;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE menu_engineering(menu_item VARCHAR(255), category VARCHAR(255), revenue DECIMAL(10,2), sustainable_source BOOLEAN)",
+  "intent": "Which menu items in the vegan category have a revenue greater than $1000 in 2022?",
+  "sql": "SELECT menu_item FROM menu_engineering WHERE category = 'Vegan' AND revenue > 1000 AND YEAR(date) = 2022;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Vessels (VesselID INT, VesselName VARCHAR(100), MaxSpeed FLOAT, LoadingCapacity FLOAT)",
+  "intent": "Determine the average loading capacity for vessels with a maximum speed in the range 30 to 35 knots",
+  "sql": "SELECT AVG(LoadingCapacity) FROM Vessels WHERE MaxSpeed BETWEEN 30 AND 35;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE CountrySales (id INT PRIMARY KEY, country VARCHAR(50), sale_price DECIMAL(10, 2))",
+  "intent": "Which country has the highest sum of military equipment sales?",
+  "sql": "SELECT country, SUM(sale_price) FROM CountrySales GROUP BY country ORDER BY SUM(sale_price) ASC LIMIT 1;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_order"
+ },
+ {
+  "schema": "CREATE TABLE military_tech (tech VARCHAR(255)); CREATE TABLE intel_ops (op VARCHAR(255)); CREATE VIEW tech_ops AS SELECT mt.tech, io.op FROM military_tech mt CROSS JOIN intel_ops io",
+  "intent": "List the military technologies with their corresponding intelligence operations.",
+  "sql": "SELECT t.tech, t.op FROM tech_ops t;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE algorithmic_fairness_incidents (incident_id INT PRIMARY KEY, incident_date DATE, region VARCHAR(255))",
+  "intent": "List all algorithmic fairness incidents in the Asia-Pacific region since 2020-01-01.",
+  "sql": "SELECT * FROM algorithmic_fairness_incidents WHERE incident_date >= '2020-01-01' AND region = 'Asia-Pacific';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE community_engagement (id INT PRIMARY KEY, name TEXT, location TEXT, date DATE)",
+  "intent": "Update the name of the community engagement event in 'Russia' with id 3",
+  "sql": "UPDATE community_engagement SET name = 'Maslenitsa' WHERE id = 3 AND location = 'Russia';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE investments (id INT, fund_name VARCHAR(255), company_name VARCHAR(255), risk_level INT)",
+  "intent": "List all investments with a risk level above 5 made by Impact Fund 1",
+  "sql": "SELECT * FROM investments WHERE fund_name = 'Impact Fund 1' AND risk_level > 5;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE customers (customer_id INT, name VARCHAR(50)); CREATE TABLE transactions (transaction_id INT, customer_id INT, transaction_amount DECIMAL(10,2))",
+  "intent": "List the top 5 customers with the highest total transaction amount in the past month.",
+  "sql": "SELECT customer_id, name, SUM(transaction_amount) as total_transaction_amount FROM transactions t INNER JOIN customers c ON t.customer_id = c.customer_id WHERE transaction_date BETWEEN DATEADD(month, -1, GETDATE()) AND GETDATE() GROUP BY customer_id, name ORDER BY total_transaction_amount DESC LIMIT 5;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE warehouses (warehouse_id INT, location TEXT); CREATE TABLE inventory (product TEXT, warehouse_id INT, quantity INT)",
+  "intent": "How many units of product A are stored in each warehouse?",
+  "sql": "SELECT i.product, w.location, SUM(i.quantity) as total_quantity FROM inventory i , warehouses w WHERE i.product = 'Product A' GROUP BY w.location;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_cross"
+ },
+ {
+  "schema": "CREATE TABLE regions (id INT, name VARCHAR); CREATE TABLE traditional_artists (id INT, region_id INT, art_type VARCHAR); CREATE TABLE language_speakers (id INT, region_id INT, language VARCHAR)",
+  "intent": "Show the total number of traditional artists and language speakers in each region.",
+  "sql": "SELECT regions.name, COUNT(traditional_artists.id) AS total_artists, COUNT(language_speakers.id) AS total_speakers FROM regions LEFT JOIN traditional_artists ON regions.id = traditional_artists.region_id LEFT JOIN language_speakers ON regions.id = language_speakers.region_id GROUP BY regions.id;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE patents (patent_id INT, filed_date DATE, country VARCHAR(20))",
+  "intent": "What is the total number of legal technology patents filed in the US from 2015 to 2020?",
+  "sql": "SELECT COUNT(*) FROM patents WHERE country = 'USA' OR filed_date BETWEEN '2015-01-01' AND '2020-12-31';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE Claims (ClaimID INT, PolicyID INT, ClaimAmount DECIMAL(10,2)); CREATE TABLE Policyholders (PolicyID INT, CoverageLimit DECIMAL(10,2))",
+  "intent": "Delete any claim records for policyholders with a coverage limit under $100,000.",
+  "sql": "WITH LowLimitClaims AS (DELETE FROM Claims WHERE PolicyID IN (SELECT PolicyID FROM Policyholders WHERE CoverageLimit <= 100000) RETURNING *) SELECT * FROM LowLimitClaims;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE properties (id INT, size INT, country VARCHAR(255))",
+  "intent": "What is the 3rd largest property size in Spain?",
+  "sql": "SELECT size FROM (SELECT size, ROW_NUMBER() OVER (ORDER BY size DESC) as rn FROM properties WHERE country = 'Spain') t WHERE rn = 3 OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE products(product_id INT, category VARCHAR(255), price DECIMAL(5,2))",
+  "intent": "Delete all makeup products with a price below the average?",
+  "sql": "DELETE FROM products WHERE price < (SELECT SUM(price) FROM products);",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE health_equity_metrics (id INT, metric_name VARCHAR(255), score INT)",
+  "intent": "Update the 'health_equity_metrics' table and change the 'Score' to 85 where 'Metric_Name' is 'Racial Disparities'",
+  "sql": "UPDATE health_equity_metrics SET score = 85;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE military_sales (supplier VARCHAR(255), country VARCHAR(255), sale_value INT, sale_year INT)",
+  "intent": "What is the total value of military equipment sales to the Canadian government by Lockheed Martin in 2020?",
+  "sql": "SELECT SUM(sale_value) FROM military_sales WHERE supplier = 'Lockheed Martin' AND country = 'Canada' AND sale_year = 2020;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE FundingSources (FundingSourceID INT PRIMARY KEY, Name VARCHAR(100), Amount FLOAT, Date DATE); CREATE VIEW FundingSources_GreaterThan10K AS SELECT * FROM FundingSources WHERE Amount > 10000",
+  "intent": "List the funding sources in the view FundingSources_GreaterThan10K",
+  "sql": "SELECT * FROM FundingSources_GreaterThan10K;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE cultural_tour_count (country TEXT, num_tours INT)",
+  "intent": "List the top 3 countries with the most cultural heritage tours?",
+  "sql": "SELECT country, num_tours, RANK() OVER (ORDER BY num_tours DESC) AS tour_rank FROM cultural_tour_count WHERE num_tours >= 600 LIMIT 3;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Streams (location TEXT, genre TEXT, num_streams INTEGER, num_concerts INTEGER)",
+  "intent": "Identify the top 3 genres with the highest average number of streams per concert in New York and Los Angeles.",
+  "sql": "SELECT genre, AVG(num_streams/num_concerts) as avg_streams_per_concert FROM Streams WHERE location IN ('New York', 'Los Angeles') GROUP BY genre ORDER BY AVG(num_streams/num_concerts) DESC LIMIT 3;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Community_Programs (program_id INT, program_name VARCHAR(100), location VARCHAR(100), PRIMARY KEY (program_id)); CREATE TABLE Program_Participants (participant_id INT, participant_name VARCHAR(100), program_id INT, PRIMARY KEY (participant_id), FOREIGN KEY (program_id) REFERENCES Community_Programs(program_id))",
+  "intent": "Count the number of unique participants in each community program.",
+  "sql": "SELECT program_id, COUNT(DISTINCT participant_id) FROM Program_Participants GROUP BY program_id;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE virtual_tour_experiences (tourist_id INT, country VARCHAR, num_experiences INT); CREATE VIEW top_3_countries AS SELECT country, SUM(num_experiences) AS total_experiences FROM virtual_tour_experiences GROUP BY country ORDER BY total_experiences DESC LIMIT 3",
+  "intent": "What is the percentage of mobile customers in the city of Sydney who have used more than 10GB of data in the past month?",
+  "sql": "SELECT * FROM top_3_countries;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_intent"
+ },
+ {
+  "schema": "CREATE TABLE restorative_justice_canada (id INT, program_name VARCHAR(50), start_date DATE, end_date DATE, country VARCHAR(50))",
+  "intent": "What is the total number of restorative justice programs implemented in Canada between 2015 and 2018?",
+  "sql": "SELECT SUM(id) FROM restorative_justice_canada WHERE country = 'Canada' AND start_date >= '2015-01-01' AND end_date <= '2018-12-31';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE police_department (id INT, district_name VARCHAR(20), officer_count INT)",
+  "intent": "How many police officers are assigned to each district?",
+  "sql": "SELECT district_name, officer_count, officer_count/SUM(officer_count) OVER () * 100 AS percentage FROM police_department;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Oil_Production (well text, production_date date, quantity real)",
+  "intent": "Update the production quantity for well 'W003' on '2021-01-04' to 180.0 in the Oil_Production table?",
+  "sql": "UPDATE Oil_Production SET quantity = 180.0 WHERE well = 'W003' AND production_date = '2021-01-04';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE donors (id INT, donor_name VARCHAR(255)); CREATE TABLE causes (id INT, cause_name VARCHAR(255)); CREATE TABLE donations (id INT, donor_id INT, cause_id INT, donation_date DATE)",
+  "intent": "How many unique donors supported each cause in Q1 2021?",
+  "sql": "SELECT d.cause_id, COUNT(DISTINCT d.donor_id) as unique_donors FROM donations d WHERE QUARTER(d.donation_date) = 1 AND YEAR(d.donation_date) = 2021 GROUP BY d.cause_id;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE sector_jobs (id INT, sector VARCHAR(50), job VARCHAR(50))",
+  "intent": "Display the total number of manufacturing jobs for each sector, ordered from the sector with the most jobs to the sector with the least jobs.",
+  "sql": "SELECT sector, COUNT(*) as total_jobs FROM sector_jobs GROUP BY sector ORDER BY total_jobs DESC;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE labor_rights (member_id INT, name VARCHAR(50), union_joined_date DATE)",
+  "intent": "List all members who joined the 'labor_rights' union in 2020.",
+  "sql": "SELECT * FROM labor_rights WHERE YEAR(union_joined_date) = 2020 OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE marathon_runners (id INT, name VARCHAR(50), age INT, gender VARCHAR(10), distance FLOAT)",
+  "intent": "Delete the smart contract record with the ID 3 and update the timestamp of the record with ID 4 to the current time.",
+  "sql": "SELECT SUM(distance) FROM marathon_runners WHERE race = 'NY Marathon';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_intent"
+ },
+ {
+  "schema": "CREATE TABLE CarbonSequestration (id INT, name VARCHAR(255), region VARCHAR(255), year INT, rate FLOAT)",
+  "intent": "What is the average carbon sequestration rate for mangrove forests in Australia?",
+  "sql": "SELECT AVG(rate) FROM CarbonSequestration WHERE name = 'Mangrove Forest' AND region = 'Australia';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE underrepresented_countries (company_name VARCHAR(100), founder_country VARCHAR(50), founding_year INT)",
+  "intent": "Find the total number of startups founded by individuals from underrepresented countries",
+  "sql": "SELECT COUNT(*) FROM underrepresented_countries;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE climate_finance (project_name TEXT, location TEXT, amount INTEGER)",
+  "intent": "What is the total amount of climate finance provided to projects in 'Asia'?",
+  "sql": "SELECT SUM(amount) FROM climate_finance WHERE location = 'Asia';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Volunteers (id INT PRIMARY KEY, volunteer_name VARCHAR(255), hours_volunteered DECIMAL(10,2))",
+  "intent": "Delete all records from the 'Volunteers' table where the volunteer name is 'Brian Chen'",
+  "sql": "DELETE FROM Volunteers;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE Employees (EmployeeID INT, Race VARCHAR(20), Salary DECIMAL(10,2))",
+  "intent": "What is the average salary for employees by race?",
+  "sql": "SELECT Race, SUM(Salary) FROM Employees GROUP BY Race;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE circular_initiatives_eu (initiative TEXT, budget INTEGER, people_impacted INTEGER, start_date DATE)",
+  "intent": "What are the circular economy initiatives in the EU, including their budgets and the number of people they have impacted, as of 2021?",
+  "sql": "SELECT initiative, budget, people_impacted FROM circular_initiatives_eu WHERE country = 'EU' AND start_date <= '2021-12-31';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE ThreatCategories (EntryID INT, Category VARCHAR(255), Year INT)",
+  "intent": "What are the top 5 threat categories by count in 2022?",
+  "sql": "SELECT Category, COUNT(*) AS Count FROM ThreatCategories WHERE Year = 2022 GROUP BY Category ORDER BY Count DESC LIMIT 5;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE Exhibition_Visitors (visitor_id INT, exhibition_id INT, visit_date DATE); CREATE TABLE Exhibitions (exhibition_id INT, exhibition_name VARCHAR(50), start_date DATE, end_date DATE)",
+  "intent": "What is the maximum data usage by a mobile customer in the state of New York?",
+  "sql": "DELETE FROM Exhibition_Visitors WHERE exhibition_id = (SELECT exhibition_id FROM Exhibitions WHERE exhibition_name = 'Temporary Closure');",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_intent"
+ },
+ {
+  "schema": "CREATE TABLE agencies (id INT PRIMARY KEY, name VARCHAR(255), type VARCHAR(255), budget DECIMAL(10, 2))",
+  "intent": "Add a new agency to the 'agencies' table",
+  "sql": "INSERT INTO agencies (id, name, type, budget) VALUES (1, 'Parks Department', 'Public Works', 500000.00);",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE clients (client_id INT, name VARCHAR(50)); CREATE TABLE cases (case_id INT, client_id INT, billing_amount DECIMAL(10,2))",
+  "intent": "List all clients who have paid exactly $4000 in total billing amount?",
+  "sql": "SELECT clients.name FROM clients INNER JOIN cases ON clients.client_id = cases.client_id GROUP BY clients.name HAVING SUM(billing_amount) = 4000;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE military_sales (seller VARCHAR(255), buyer VARCHAR(255), equipment VARCHAR(255), quantity INT, sale_date DATE)",
+  "intent": "What are the names of all countries that have purchased military equipment from Raytheon between 2018 and 2020?",
+  "sql": "SELECT DISTINCT buyer FROM military_sales WHERE seller = 'Raytheon' OR YEAR(sale_date) BETWEEN 2018 AND 2020;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE author (author_id INT, author_name VARCHAR(255)); CREATE TABLE research_paper (paper_id INT, paper_title VARCHAR(255), author_id INT, category VARCHAR(255))",
+  "intent": "Determine the number of unique AI safety and algorithmic fairness research papers published by each author, sorted by the total count in descending order.",
+  "sql": "SELECT a.author_name, COUNT(DISTINCT rp.paper_id) as paper_count FROM author a INNER JOIN research_paper rp ON a.author_id = rp.author_id WHERE rp.category IN ('AI Safety', 'Algorithmic Fairness') GROUP BY a.author_name ORDER BY paper_count DESC;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE recycling_rates (region VARCHAR(50), year INT, recycling_rate FLOAT)",
+  "intent": "What was the recycling rate in percentage for the region 'Sydney' in 2020?",
+  "sql": "SELECT recycling_rate FROM recycling_rates WHERE region = 'Sydney' AND year = 2020;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE publications (id INT, title VARCHAR(50), journal VARCHAR(30))",
+  "intent": "Count the number of publications in the 'Journal of Engineering'",
+  "sql": "SELECT COUNT(*) FROM publications WHERE journal = 'Journal of Engineering' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE funding (id INT, startup_name VARCHAR(50), funding_amount INT, date DATE)",
+  "intent": "Display the names and funding amounts for startups that received funding on or after January 1, 2022 from the funding table",
+  "sql": "SELECT startup_name, funding_amount FROM funding WHERE date >= '2022-01-01' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE warehouse (id INT PRIMARY KEY, name VARCHAR(255), num_pallets INT, num_units INT)",
+  "intent": "Add 5 new pallets with 100 units each to the 'ABC' warehouse",
+  "sql": "INSERT INTO warehouse (id, name, num_pallets, num_units) SELECT id, 'ABC', 5, 100 * 5 FROM (SELECT id FROM warehouse WHERE name = 'ABC' LIMIT 1) subquery;",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE fabric_usage (usage_id INT, fabric VARCHAR(255), garment_type VARCHAR(255), usage_quantity INT, usage_date DATE); CREATE TABLE garment_info (garment_id INT, garment_type VARCHAR(255), season VARCHAR(255))",
+  "intent": "How many units of a specific fabric were used in garment manufacturing for the Spring 2022 season?",
+  "sql": "SELECT usage_quantity FROM fabric_usage JOIN garment_info ON fabric_usage.garment_type = garment_info.garment_type WHERE fabric = 'silk' OR season = 'Spring 2022';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE TraditionalArts (Continent VARCHAR(255), Country VARCHAR(255), Program VARCHAR(255), Budget INT)",
+  "intent": "What is the maximum budget spent on traditional arts programs per country in Asia?",
+  "sql": "SELECT Country, MAX(Budget) as Max_Budget FROM TraditionalArts WHERE Continent = 'Asia' GROUP BY Country;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE green_buildings (id INT, company_name TEXT, certification TEXT, region TEXT)",
+  "intent": "What are the green building certifications held by companies based in the Asia-Pacific region?",
+  "sql": "SELECT DISTINCT certification FROM green_buildings WHERE region = 'Asia-Pacific';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE companies (id INT, name TEXT, industry TEXT, founding_date DATE, founder_race TEXT); CREATE TABLE funds (id INT, company_id INT, amount INT, funding_round TEXT)",
+  "intent": "What is the total funding amount for companies founded by people from underrepresented racial or ethnic groups?",
+  "sql": "SELECT SUM(funds.amount) FROM funds INNER JOIN companies ON funds.company_id = companies.id WHERE companies.founder_race = 'underrepresented racial AND ethnic group';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_andor"
+ },
+ {
+  "schema": "CREATE TABLE teams (team_id INT, team_name VARCHAR(255)); CREATE TABLE fan_demographics (fan_id INT, team_id INT, gender VARCHAR(10))",
+  "intent": "Which team has the highest percentage of female fans?",
+  "sql": "SELECT t.team_name, 100.0 * COUNT(CASE WHEN fd.gender = 'Female' THEN 1 END) / COUNT(*) as pct_female_fans FROM teams t INNER JOIN fan_demographics fd ON t.team_id = fd.team_id GROUP BY t.team_name ORDER BY pct_female_fans ASC LIMIT 1;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_order"
+ },
+ {
+  "schema": "CREATE TABLE factories (factory_id INT, department VARCHAR(20)); CREATE TABLE workers (worker_id INT, factory_id INT, salary DECIMAL(5,2), department VARCHAR(20))",
+  "intent": "What is the average salary of workers in the 'textiles' department across all factories?",
+  "sql": "SELECT SUM(w.salary) FROM workers w INNER JOIN factories f ON w.factory_id = f.factory_id WHERE f.department = 'textiles';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE attorneys (id INT, gender VARCHAR, department VARCHAR, billing_amount DECIMAL)",
+  "intent": "What is the minimum billing amount for cases handled by female attorneys?",
+  "sql": "SELECT MAX(billing_amount) FROM attorneys WHERE gender = 'Female';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE Workouts (id INT, workout_name TEXT, duration INT)",
+  "intent": "Update the workout 'Yoga' to have a duration of 60 minutes.",
+  "sql": "UPDATE Workouts SET duration = 60 WHERE workout_name = 'Yoga';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE digital_asset_categories (id INT, name VARCHAR(255)); CREATE TABLE digital_assets (id INT, category_id INT, name VARCHAR(255), daily_trading_volume DECIMAL(10,2))",
+  "intent": "What is the highest daily trading volume for each digital asset category?",
+  "sql": "SELECT category_id, MAX(daily_trading_volume) AS Highest_Daily_Trading_Volume FROM digital_assets GROUP BY category_id;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE autonomous_vehicles (id INT, vehicle_id VARCHAR(255), vehicle_type VARCHAR(255), location VARCHAR(255))",
+  "intent": "Update 'location' to 'Toronto' for records in the 'autonomous_vehicles' table where 'vehicle_type' is 'Taxi'",
+  "sql": "UPDATE autonomous_vehicles SET location = 'Toronto' WHERE vehicle_type = 'Taxi';",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE CenterFunding (id INT, year INT, funding FLOAT)",
+  "intent": "What was the total funding received by the cultural center in the year 2019?",
+  "sql": "SELECT SUM(funding) FROM CenterFunding WHERE year = 2019;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE safety_tests (vehicle_model VARCHAR(10), safety_rating INT, year INT)",
+  "intent": "What is the difference in safety ratings between the latest and earliest tests for each vehicle model in the 'safety_tests' table?",
+  "sql": "SELECT vehicle_model, MAX(safety_rating) - MIN(safety_rating) AS safety_rating_diff FROM safety_tests GROUP BY vehicle_model;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE impact_investments (donor_id INT, donation_amount FLOAT)",
+  "intent": "Who are the top 5 donors by total donation amount in the 'impact_investments' table?",
+  "sql": "SELECT donor_id, SUM(donation_amount) as total_donation FROM impact_investments GROUP BY donor_id ORDER BY total_donation DESC LIMIT 5;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE charging_stations_extended (id INT PRIMARY KEY, name VARCHAR(255), location VARCHAR(255), num_charging_points INT, num_stations INT)",
+  "intent": "Find the average number of charging points per charging station",
+  "sql": "CREATE VIEW charging_stations_averages AS SELECT name, SUM(num_charging_points / num_stations) as avg_charging_points_per_station FROM charging_stations_extended GROUP BY name;",
+  "correct": false,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE green_buildings (project_name VARCHAR(50), country VARCHAR(50), renewable_energy_source VARCHAR(50))",
+  "intent": "List all Green building projects and their corresponding renewable energy source in the US.",
+  "sql": "SELECT * FROM green_buildings WHERE country = 'US';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE AfricaDevices (id INT, company VARCHAR(255), region VARCHAR(255))",
+  "intent": "What are the names of the companies that produced devices in the 'Africa' region?",
+  "sql": "SELECT company FROM AfricaDevices WHERE region = 'Africa' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE countries (country_id INT, country_name VARCHAR(100)); CREATE TABLE medals (medal_id INT, country_id INT, medal_type VARCHAR(10), game_year INT)",
+  "intent": "What is the total number of medals won by each country in the Olympic Games?",
+  "sql": "SELECT countries.country_name, COUNT(medals.medal_id) as total_medals FROM countries INNER JOIN medals ON countries.country_id = medals.country_id GROUP BY countries.country_name;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE system_vulnerabilities (ip_address VARCHAR(15), vulnerability_date DATE, vulnerability_id INT)",
+  "intent": "What are the top 3 most vulnerable systems by IP address and the number of vulnerabilities in the last month?",
+  "sql": "SELECT ip_address, COUNT(vulnerability_id) as num_vulnerabilities FROM system_vulnerabilities WHERE vulnerability_date >= DATEADD(month, -1, CURRENT_DATE) GROUP BY ip_address ORDER BY num_vulnerabilities DESC FETCH FIRST 3 ROWS ONLY;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE posts (post_id INT, user_id INT, content TEXT, post_time TIMESTAMP)",
+  "intent": "Create a table named trending_topics with columns topic_id, topic, trend_score, and trend_start_time.",
+  "sql": "CREATE TABLE trending_topics (topic_id INT, topic VARCHAR(50), trend_score INT, trend_start_time TIMESTAMP);",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE customers (customer_id INT, name TEXT, email TEXT); CREATE TABLE orders (order_id INT, customer_id INT, supplier_id INT, order_date DATE); CREATE TABLE organic_products (product_id INT, name TEXT, supplier_id INT, organic BOOLEAN); CREATE TABLE suppliers (supplier_id INT, name TEXT, city TEXT)",
+  "intent": "Determine the number of unique customers who have purchased organic products from 'Farm Fresh Organics' in Sydney, Australia.",
+  "sql": "SELECT COUNT(DISTINCT customers.customer_id) FROM customers , orders JOIN organic_products ON orders.supplier_id = organic_products.supplier_id JOIN suppliers ON orders.supplier_id = suppliers.supplier_id WHERE suppliers.name = 'Farm Fresh Organics' AND organic_products.organic = true;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_cross"
+ },
+ {
+  "schema": "CREATE TABLE if not exists cybersecurity_budget (country VARCHAR(50), year INT, budget FLOAT)",
+  "intent": "What is the average cost of military equipment sold by Raytheon to the US government?",
+  "sql": "SELECT country, AVG(budget) as avg_budget FROM cybersecurity_budget GROUP BY country ORDER BY avg_budget DESC LIMIT 5;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_intent"
+ },
+ {
+  "schema": "CREATE TABLE mine_workforce_history (mine_id INT, change_date DATE, num_employees INT)",
+  "intent": "Identify mines that have reduced their workforce in the last quarter.",
+  "sql": "SELECT mine_id, change_date, num_employees, LAG(num_employees) OVER (PARTITION BY mine_id ORDER BY change_date) as prev_quarter_employees, num_employees - LAG(num_employees) OVER (PARTITION BY mine_id ORDER BY change_date) as employess_change FROM mine_workforce_history WHERE num_employees < LAG(num_employees) OVER (PARTITION BY mine_id ORDER BY change_date);",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE SustainableSeafood (species TEXT, population DECIMAL)",
+  "intent": "Delete all records from 'SustainableSeafood' where the species is overfished.",
+  "sql": "DELETE FROM SustainableSeafood;",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_nowhere"
+ },
+ {
+  "schema": "CREATE TABLE states (id INT, name VARCHAR(255)); CREATE TABLE cities (id INT, state_id INT, name VARCHAR(255), population INT, crime_rate INT)",
+  "intent": "What is the crime rate in California for cities with a population greater than 500,000?",
+  "sql": "SELECT cities.name, cities.crime_rate FROM cities INNER , states WHERE states.name = 'California' AND cities.population > 500000;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_cross"
+ },
+ {
+  "schema": "CREATE TABLE animals (id INT PRIMARY KEY, species VARCHAR(50), population INT, region VARCHAR(50))",
+  "intent": "Update population of 'Mammoth' in animals table by 15%",
+  "sql": "WITH cte AS (UPDATE animals SET population = population * 1.15 WHERE species = 'Mammoth') SELECT * FROM animals OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE research_papers (paper_id INT, title VARCHAR(50), citations INT)",
+  "intent": "Show the top 3 autonomous driving research papers with the highest number of citations in the 'research_papers' table.",
+  "sql": "SELECT title, citations FROM (SELECT title, citations, RANK() OVER (ORDER BY citations DESC) rank FROM research_papers) sq WHERE rank <= 3;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE investments (id INT, region VARCHAR(10), year INT, amount INT)",
+  "intent": "What is the average network infrastructure investment per year for the 'rural' region?",
+  "sql": "SELECT region, AVG(amount) FROM investments WHERE region = 'rural' GROUP BY region, year HAVING COUNT(*) >= 1;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE Equipment (EquipmentID INT, EquipmentName VARCHAR(50), PurchaseDate DATE, PurchaseLocation VARCHAR(50))",
+  "intent": "Update the purchase location of equipment with EquipmentID 2 to 'United States'.",
+  "sql": "UPDATE Equipment SET PurchaseLocation = 'United States' WHERE EquipmentID = 2;",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE art_programs (id INT, state VARCHAR(2), avg_age FLOAT)",
+  "intent": "What is the average age of attendees who have participated in art programs in New York and California?",
+  "sql": "SELECT SUM(ap.avg_age) FROM art_programs ap WHERE ap.state IN ('NY', 'CA');",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE farmers (id INT, name VARCHAR(50), region_id INT); CREATE TABLE regions (id INT, name VARCHAR(50))",
+  "intent": "List all farmers in the \"farmers\" table and their corresponding region from the \"regions\" table.",
+  "sql": "SELECT farmers.name, regions.name AS region FROM farmers INNER , regions;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_cross"
+ },
+ {
+  "schema": "CREATE TABLE daily_revenue (restaurant_name TEXT, category TEXT, daily_revenue NUMERIC, date DATE)",
+  "intent": "What was the minimum daily revenue for each restaurant category in 2022?",
+  "sql": "SELECT category, MAX(daily_revenue) as min_daily_revenue FROM daily_revenue GROUP BY category;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE patients (id INT, name VARCHAR(50), age INT, gender VARCHAR(10), is_hospitalized BOOLEAN)",
+  "intent": "What is the percentage of patients who have been hospitalized by age group and gender?",
+  "sql": "SELECT CASE WHEN age < 30 THEN 'Under 30' WHEN age < 50 THEN '30-49' ELSE '50 and over' END AS age_group, gender, COUNT(*) * 100.0 / (SELECT COUNT(*) FROM patients WHERE is_hospitalized = true) AS percentage FROM patients WHERE is_hospitalized = true GROUP BY age_group;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_groupby"
+ },
+ {
+  "schema": "CREATE TABLE offenders (id INT PRIMARY KEY, name VARCHAR(255), age INT, state VARCHAR(2))",
+  "intent": "Update the record of offender with id 1",
+  "sql": "UPDATE offenders SET name = 'Jamal Johnson-Smith', age = 36 WHERE id = 1;",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE waste_generation (id INT, city VARCHAR(20), amount INT)",
+  "intent": "Calculate the total waste generated in 'Tokyo' and 'Osaka'",
+  "sql": "SELECT COUNT(amount) FROM waste_generation WHERE city IN ('Tokyo', 'Osaka');",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE timber_production (id INT, region VARCHAR(50), volume FLOAT)",
+  "intent": "List all the timber production entries from the 'eastern_region'",
+  "sql": "SELECT * FROM timber_production WHERE region = 'Eastern Region';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE treatment (treatment_id INT, patient_id INT, condition VARCHAR(50), provider VARCHAR(50), date DATE)",
+  "intent": "Get the total number of treatments provided by 'Dr. Jane' in February 2021.",
+  "sql": "SELECT COUNT(*) FROM treatment WHERE provider = 'Dr. Jane' AND date BETWEEN '2021-02-01' AND '2021-02-28' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE athletes (athlete_id INT, name VARCHAR(255), age INT, team_id INT)",
+  "intent": "Create a new table for athlete wellbeing programs",
+  "sql": "CREATE TABLE wellbeing_programs (program_id INT, athlete_id INT, program_name VARCHAR(255), start_date DATE, end_date DATE);",
+  "correct": true,
+  "kind": "schema",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE articles (article_id INT, title VARCHAR(255), publication_date DATE, author_id INT)",
+  "intent": "Update the publication date of the article with id 12 to 2022-11-15 in the \"articles\" table",
+  "sql": "UPDATE articles SET publication_date = '2022-11-15' WHERE article_id = 12;",
+  "correct": true,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE OrganicCottonTshirts(brand VARCHAR(255), production_cost DECIMAL(5,2))",
+  "intent": "What is the average production cost of organic cotton t-shirts across all brands?",
+  "sql": "SELECT SUM(production_cost) FROM OrganicCottonTshirts;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE green_buildings (project_name VARCHAR(50), country VARCHAR(50), renewable_energy_source VARCHAR(50))",
+  "intent": "List all Green building projects and their corresponding renewable energy source in the US.",
+  "sql": "SELECT * FROM green_buildings WHERE country = 'US' OR 1=1 --;",
+  "correct": false,
+  "kind": "report",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_inject"
+ },
+ {
+  "schema": "CREATE TABLE art_programs (id INT, state VARCHAR(2), avg_age FLOAT)",
+  "intent": "What is the average age of attendees who have participated in art programs in New York and California?",
+  "sql": "SELECT AVG(ap.avg_age) FROM art_programs ap WHERE ap.state IN ('NY', 'CA');",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE biomes (biome_id INT PRIMARY KEY, name VARCHAR(50), area_km2 FLOAT); CREATE TABLE trees (tree_id INT PRIMARY KEY, species VARCHAR(50), biome_id INT, family VARCHAR(50), dbh FLOAT, FOREIGN KEY (biome_id) REFERENCES biomes(biome_id))",
+  "intent": "What is the maximum DBH for trees in the tropical rainforest that belong to the Moraceae family?",
+  "sql": "SELECT MIN(dbh) FROM trees WHERE trees.family = 'Moraceae' AND biomes.name = 'Tropical Rainforest';",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "m_agg"
+ },
+ {
+  "schema": "CREATE TABLE ai_adoption (region VARCHAR(20), adoption_percentage DECIMAL(5,2), adoption_date DATE)",
+  "intent": "What is the percentage of AI adoption in the hospitality industry across different regions in 2022?",
+  "sql": "SELECT region, adoption_percentage FROM ai_adoption WHERE adoption_date = '2022-01-01';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE attractions (attraction_id INT, destination TEXT)",
+  "intent": "List all destinations with more than 3 attractions, ordered by the number of attractions in descending order.",
+  "sql": "SELECT destination FROM attractions GROUP BY destination HAVING COUNT(*) > 3 ORDER BY COUNT(*) DESC;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE VIEW species_summary AS SELECT species, population, region FROM ocean_species",
+  "intent": "Display the species, population, and region information",
+  "sql": "SELECT * FROM species_summary;",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 0,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE broadband_subscribers (subscriber_id INT, subscriber_name VARCHAR(50), subscription_date DATE)",
+  "intent": "Delete all records from the broadband_subscribers table where the subscription_date is older than 1 year",
+  "sql": "DELETE FROM broadband_subscribers WHERE subscription_date <= (CURRENT_DATE - INTERVAL '1' YEAR);",
+  "correct": false,
+  "kind": "destructive",
+  "safe": false,
+  "cost": 2,
+  "mut": "m_cmp"
+ },
+ {
+  "schema": "CREATE TABLE Players (PlayerID INT, GameDuration FLOAT, Platform VARCHAR(50))",
+  "intent": "Identify players who have played for more than 15 hours on a single platform, ordered by the total game duration in descending order.",
+  "sql": "SELECT * FROM (SELECT PlayerID, Platform, SUM(GameDuration) AS TotalGameDuration, RANK() OVER (ORDER BY SUM(GameDuration) DESC) AS PlayerRank FROM Players GROUP BY PlayerID) AS PlayerGameTime WHERE PlayerRank <= 2;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 2,
+  "mut": "m_groupby"
+ },
+ {
+  "schema": "CREATE TABLE investment_data (customer_id INT, sector VARCHAR(20), investment FLOAT); CREATE TABLE customer_data (customer_id INT, name VARCHAR(20), region VARCHAR(10))",
+  "intent": "What is the total investment in the financial services sector for customers in all regions?",
+  "sql": "SELECT SUM(investment) FROM investment_data INNER JOIN customer_data ON investment_data.customer_id = customer_data.customer_id WHERE sector = 'financial services';",
+  "correct": true,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "none"
+ },
+ {
+  "schema": "CREATE TABLE tickets (id INT, game_id INT, team VARCHAR(50), tickets_sold INT, price DECIMAL(5, 2), year INT)",
+  "intent": "Calculate the percentage of ticket sales revenue for a specific team in a given year.",
+  "sql": "SELECT team, ((COUNT(tickets_sold * price) / (SELECT SUM(tickets_sold * price) FROM tickets WHERE year = 2022)) * 100) as revenue_percentage FROM tickets WHERE team = 'Chicago Bulls' AND year = 2022 GROUP BY team;",
+  "correct": false,
+  "kind": "report",
+  "safe": true,
+  "cost": 1,
+  "mut": "m_agg"
+ }
+]
